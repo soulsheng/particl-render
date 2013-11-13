@@ -105,23 +105,12 @@
 	{
 		UpdateEachFrame();
 
-		//glDisable(GL_DEPTH_TEST);
-
-		//glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-		glBlendFunc(GL_SRC_ALPHA,GL_ONE);
-		glEnable(GL_BLEND) ;
-		//glDisable(GL_BLEND) ;
-
-		glAlphaFunc(GL_GREATER, 0.0f) ;
-		//glEnable(GL_ALPHA_TEST);
-		glDisable(GL_ALPHA_TEST);
-
-		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE/*GL_REPLACE*/);
-		glEnable(GL_TEXTURE_2D) ;
-
-
 		glColor4f(1.0f  ,1.0f  ,1.0f ,1.0f);
-				
+
+#if RENDERMODE_POINT
+		glBegin( GL_POINTS );		
+#endif
+
 		for ( m_mapFountainParticleItor  = m_mapFountainParticle.end(), m_mapFountainParticleItor --;
 			m_mapFountainParticleItor != m_mapFountainParticle.begin();
 			m_mapFountainParticleItor -- )
@@ -133,21 +122,24 @@
 			float y=pCurrentParticle->position.y;						// Grab Our Particle Y Position
 			float z=pCurrentParticle->position.z;					// Particle Z Pos + Zoom
 
+
+#if RENDERMODE_POINT
+			glVertex3f( x, y, z ); 
+#else
 			glBegin( GL_QUADS );		
 			glTexCoord2d(1,1); glVertex3f(x+0.2f, y+0.4f, z+0.0f); // Top Right
 			glTexCoord2d(0,1); glVertex3f(x-0.2f, y+0.4f, z+0.0f); // Top Left
 			glTexCoord2d(0,0); glVertex3f(x-0.2f, y-0.4f, z+0.0f); // Bottom Right
 			glTexCoord2d(1,0); glVertex3f(x+0.2f, y-0.4f, z+0.0f); // Bottom Left
 			glEnd();
+#endif
 			
 		}// for (int loop)
-		
-		glTexEnvf    (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-		glDisable(GL_BLEND) ;
-		glDisable(GL_TEXTURE_2D) ;
-		glDisable(GL_ALPHA_TEST) ;
-		//glEnable(GL_DEPTH_TEST) ;
+#if RENDERMODE_POINT
+		glEnd();
+#endif
+		
 		
 	} // void vgFountain::Render()
 
