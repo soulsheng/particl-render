@@ -21,10 +21,16 @@ int DrawScene::DrawGLScene( )
 		m_model->draw();													// Draw The Model
 	}
 #else
+
+#if ONLY_RENDER_PARTICLE
+	m_particleMngr.renderParticleNode();		// Джх╬аёвсо╣мЁ
+#else
 	for(int nIndex = 0; nIndex < COUNT_MODEL; nIndex++ )
 	{
 		m_model[nIndex].draw();													// Draw The Model
 	}
+#endif
+
 #endif
 	//long timerEndMiliSecond = clock();
 
@@ -96,6 +102,10 @@ int DrawScene::InitGL( )
 	AllocConsole(); 
 	freopen( "CONOUT$","w",stdout);
 #endif
+
+
+	m_particleMngr.addParticleNode("", PARTICLE_TYPE_FOUNTAIN );
+
 	return TRUE;
 }
 

@@ -75,3 +75,5 @@ using namespace std;
 #define ELEMENT_COUNT_LINE		4
 
 #define ELEMENT_COUNT_MATIRX	(ELEMENT_COUNT_LINE*4)
+
+#define ONLY_RENDER_PARTICLE	1 // 仅渲染粒子系统

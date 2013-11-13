@@ -10,7 +10,7 @@
 	class   ParticleManager
 	{
 		
-	private:
+	public:
 		ParticleManager() 
 		{
 			setDefault();

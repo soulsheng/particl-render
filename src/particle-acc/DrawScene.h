@@ -9,6 +9,8 @@
 #include "timerOMP.h"
 #include "timer.h"
 
+#include "vgParticleManager.h"
+
 class DrawScene
 {
 public:
@@ -28,4 +30,7 @@ private:
 
 	CTimer	_timer;
 	int timer1;
+
+
+	ParticleManager		m_particleMngr;
 };
