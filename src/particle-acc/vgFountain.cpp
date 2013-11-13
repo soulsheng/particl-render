@@ -119,8 +119,11 @@
 	
 	void vgFountain::render()
 	{
+#if RENDERMODE_MOVING
 		UpdateEachFrame();
+#endif
 
+#if ENABLE_DRAW
 		glColor4f(1.0f  ,1.0f  ,1.0f ,1.0f);
 
 #if RENDERMODE_POINT
@@ -148,7 +151,7 @@
 		}// for (int loop)
 
 #endif
-		
+#endif
 		
 	} // void vgFountain::Render()
 

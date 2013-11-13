@@ -39,12 +39,12 @@
 		// 水珠结构体 struct tagDROP
 		typedef struct	tagDROP					
 		{
-			vgKernel::Vec3	vgen;			//	球形坐标系(r , a, b)
+			vgKernel::Vec3	vgen;			//	球形坐标系(r , a, b)，柱状发射模式
 			vgKernel::Vec3	position;		//  世界坐标系(x , y, z)
 			vgKernel::Vec3	vlen;			//  速度
 			vgKernel::Vec3	acc;			//  加速度
-			int		lifeFrame;					// 延时帧数
-			bool	active;						// 激活标记
+			int		lifeFrame;				//	生命期
+			bool	active;					//	激活状态
 
 		} tagDROP, * LPDROP;  // 水珠结构体 struct tagDROP
 		

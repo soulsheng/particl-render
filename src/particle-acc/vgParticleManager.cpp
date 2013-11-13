@@ -25,7 +25,7 @@
 		switch(type)
 		{
 		case PARTICLE_TYPE_FOUNTAIN:
-			node = new vgFountain( vgKernel::Vec3(70.0f, 70.0f, 520.0f), name);
+			node = new vgFountain( vgKernel::Vec3(70.0f, 50.0f, 520.0f), name);
 			break;
 
 		case PARTICLE_TYPE_FIRE:

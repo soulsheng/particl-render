@@ -26,4 +26,4 @@ struct Vec3
 
 #define PI		3.1415926
 
-#define PARTICLECOUNT	2000
+#define PARTICLECOUNT	100000
