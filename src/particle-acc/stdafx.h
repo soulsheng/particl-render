@@ -79,3 +79,14 @@ using namespace std;
 #define ONLY_RENDER_PARTICLE	1 // 仅渲染粒子系统
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
+
+
+#define ENABLE_CL_GL_INTER	1//OpenCl OpenGL 互操作
+
+#define TIME_CL_MEMERY_READ		1// 测量OpenCL内存数据传输时间，读
+#define TIME_CL_MEMERY_WRITE	1// 测量OpenCL内存数据传输时间，写
+#define TIME_CL_MEMERY_CALCULATE	1// 测量OpenCL内存数据计算时间
+
+#define NAME_STRING_PLATFORM_1	"Intel(R) OpenCL"
+#define NAME_STRING_PLATFORM	"AMD Accelerated Parallel Processing"
+#define NAME_STRING_PLATFORM_2	"NVIDIA CUDA"

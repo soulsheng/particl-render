@@ -10,6 +10,7 @@
 #include "timer.h"
 
 #include "vgParticleManager.h"
+#include "COclManager.h"
 
 class DrawScene
 {
@@ -33,4 +34,6 @@ private:
 
 
 	ParticleManager		m_particleMngr;
+	COclManager		oclManager;
+
 };

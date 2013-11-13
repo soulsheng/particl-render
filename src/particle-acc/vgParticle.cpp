@@ -41,7 +41,7 @@
 		//m_numOfFaces = 499;
 
 		//TYPE = VG_PARTICLE;
-
+		m_pPropOCL = NULL;
 	}
 
 

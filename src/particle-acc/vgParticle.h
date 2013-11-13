@@ -115,9 +115,9 @@
 		virtual void	render(){}
 
 #endif		
-
+		void setPropOCL( tagPropOCL* propOCL )	{ m_pPropOCL = propOCL; }
 	protected:
-
+		tagPropOCL* m_pPropOCL;// OpenCL 环境参数
 	};// class  ParticleBase
 
 

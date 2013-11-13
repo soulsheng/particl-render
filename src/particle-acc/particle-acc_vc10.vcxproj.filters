@@ -16,6 +16,9 @@
     <Filter Include="Math">
       <UniqueIdentifier>{e559b6b3-e68e-4f36-8639-f0a26b3b93ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{94ecc202-ac78-4aba-8cb9-65707856ecd1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DrawScene.cpp">
@@ -46,6 +49,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="vgParticleManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="common\utils.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="COclManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -89,6 +98,12 @@
     <ClInclude Include="ParticleDefinition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="common\utils.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="COclManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="math\matrix.inl">
@@ -109,5 +124,6 @@
     <None Include="math\vectorImplementation.inl">
       <Filter>Math</Filter>
     </None>
+    <None Include="updateParticlSystem.cl" />
   </ItemGroup>
 </Project>

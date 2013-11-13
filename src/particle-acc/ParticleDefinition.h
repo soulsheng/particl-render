@@ -10,6 +10,10 @@ using namespace std;
 
 typedef std::string String;
 
+#include <CL/cl.h>
+#include <CL/cl_gl.h>
+
+
 namespace vgKernel{
 
 struct Vec3 
@@ -24,6 +28,30 @@ struct Vec3
 
 }
 
+// 水珠结构体 struct tagDROP
+typedef struct	tagDROP					
+{
+	vgKernel::Vec3	vgen;			//	球形坐标系(r , a, b)，柱状发射模式
+	vgKernel::Vec3	position;		//  世界坐标系(x , y, z)
+	vgKernel::Vec3	vlen;			//  速度
+	vgKernel::Vec3	acc;			//  加速度
+	int		lifeFrame;				//	生命期
+	bool	active;					//	激活状态
+
+} tagDROP, * LPDROP;  // 水珠结构体 struct tagDROP
+
+struct tagPropOCL
+{
+	cl_context	g_context;
+	cl_command_queue g_cmd_queue;
+	cl_program	g_program;
+	cl_kernel	g_kernel;
+
+	cl_uint     g_min_align;
+	cl_device_id g_device_ID;
+};
+
 #define PI		3.1415926
 
 #define PARTICLECOUNT	100000
+

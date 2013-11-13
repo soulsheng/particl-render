@@ -4,6 +4,11 @@
 #define FILENAME_MS3D "data/tortoise.ms3d"
 //#define FILENAME_MS3D "data/Dophi.ms3d"
 
+
+#define KernelFunctionNameString	"updateParticlSystem"
+
+#define KernelFileNameString		"updateParticlSystem.cl"
+
 int DrawScene::DrawGLScene( )
 {
 
@@ -105,6 +110,8 @@ int DrawScene::InitGL( )
 
 
 	m_particleMngr.addParticleNode("", PARTICLE_TYPE_FOUNTAIN );
+	tagPropOCL* _propOCL = oclManager.Setup_OpenCL( KernelFileNameString, KernelFunctionNameString );
+	m_particleMngr.setPropOCL( _propOCL );
 
 	return TRUE;
 }
@@ -134,5 +141,8 @@ DrawScene::~DrawScene()
 		delete[] m_model;
 		m_model = NULL;
 	}
+
+	oclManager.Cleanup();
+
 }
 

@@ -87,3 +87,13 @@
 		_inputState = PARTICLE_TYPE_UNKNOWN;
 
 	}
+
+	void ParticleManager::setPropOCL( tagPropOCL* propOCL )
+	{
+		ParticleNodePtrVec::iterator itr = _particleNodeVec.begin();
+		ParticleNodePtrVec::iterator itrend = _particleNodeVec.end();
+		for (; itr != itrend; ++itr)
+		{
+			(*itr)->setPropOCL( propOCL );
+		}
+	}

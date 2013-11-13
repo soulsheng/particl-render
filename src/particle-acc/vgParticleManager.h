@@ -19,6 +19,7 @@
 		{
 		}
 
+		void setPropOCL( tagPropOCL* propOCL );
 
 	protected:
 
