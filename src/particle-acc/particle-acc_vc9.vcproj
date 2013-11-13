@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="ms3d-acc"
+	Name="particle-acc"
 	ProjectGUID="{BA37BB2F-896D-4C7E-B636-C6D71EBD4420}"
 	RootNamespace="ms3d-acc"
 	TargetFrameworkVersion="0"

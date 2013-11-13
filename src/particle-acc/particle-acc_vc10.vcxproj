@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>ms3d-acc</ProjectName>
+    <ProjectName>particle-acc</ProjectName>
     <ProjectGuid>{BA37BB2F-896D-4C7E-B636-C6D71EBD4420}</ProjectGuid>
     <RootNamespace>ms3d-acc</RootNamespace>
   </PropertyGroup>
