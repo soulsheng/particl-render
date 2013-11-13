@@ -35,10 +35,7 @@
 		int		  m_nParticleCount;		// 粒子数
 		BOOL      m_bStopSE;			// 隐藏标记
 		BOOL      m_bSwitchSE;			// 隐藏/显示模式切换
-		enum   CONST2
-		{
-			PARTICLECOUNT = 2000,		// 缺省粒子数
-		};
+		
 		string m_texturename;			// 材质名字
 
 		float	m_height;

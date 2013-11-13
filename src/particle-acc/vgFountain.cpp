@@ -109,12 +109,12 @@
 
 #if RENDERMODE_POINT
 
-		glBegin( GL_POINTS );
-		for (int loop1=0;loop1< m_nParticleCount;loop1++)
-		{
-			glVertex3f( m_pdrop[loop1].position.x, m_pdrop[loop1].position.y, m_pdrop[loop1].position.z ); 
-		}// for (int loop)
-		glEnd();
+		glVertexPointer(3, GL_FLOAT, sizeof(tagDROP), &m_pdrop[0].position.x);
+		glEnableClientState( GL_VERTEX_ARRAY );
+
+		glDrawArrays(GL_POINTS, 0, m_nParticleCount );
+
+		glDisableClientState( GL_VERTEX_ARRAY );
 
 #else
 
