@@ -25,10 +25,10 @@
 		String _meshName;
 		float	_squaredDistanceToViewer;
 
-		vgKernel::Vec3 m_Position;//起始点
+		cl_float4 m_Position;//起始点
 		bool m_isVisible;
 		
-		vgKernel::Vec3 m_prePosition;//上一帧起始点
+		float4 m_prePosition;//上一帧起始点
 
 	public:
 		//	新增属性，相对class Node
@@ -73,7 +73,7 @@
 
 	public:
 		//	自定义的虚函数
-		virtual	void Initialize(){}	//初始化
+		virtual	void Initialize(tagPropOCL* propOCL){}	//初始化
 
 	protected:
 		void	setDefault();
@@ -81,7 +81,7 @@
 	public:
 
 		// 构造 虚构
-		ParticleBase(vgKernel::Vec3 pos, String particleName, String textureFileName);
+		ParticleBase( float4 pos, String particleName, String textureFileName);
 		ParticleBase();
 		virtual	~ParticleBase();
 			
@@ -113,7 +113,6 @@
 		*/
 
 		virtual void	render(){}
-
 #endif		
 		void setPropOCL( tagPropOCL* propOCL )	{ m_pPropOCL = propOCL; }
 	protected:

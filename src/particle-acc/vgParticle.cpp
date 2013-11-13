@@ -6,12 +6,15 @@
 
 	
 	//----------------------------------------------------------------
-	ParticleBase::ParticleBase(vgKernel::Vec3 pos, String particleName, String textureFileName)
+	ParticleBase::ParticleBase( float4 pos, String particleName, String textureFileName)
 		:_meshName(particleName)
 	{
 		setDefault();
 
-		m_Position = pos;
+		m_Position.s[0]  = pos.x ;
+		m_Position.s[1]  = pos.y ;
+		m_Position.s[2]  = pos.z ;
+		m_Position.s[3]  = pos.w ;
 		m_prePosition = pos;
 		m_texturename = textureFileName;
 	}
@@ -25,9 +28,10 @@
 	//----------------------------------------------------------------
 	void ParticleBase::setDefault()
 	{
-		m_Position.x = 0.0f;
-		m_Position.y = 0.0f;
-		m_Position.z = 0.0f;
+		m_Position.s[0]  = 0.0f ;
+		m_Position.s[1]  = 0.0f ;
+		m_Position.s[2]  = 0.0f ;
+		m_Position.s[3]  = 0.0f ;
 		//pMats		 = NULL;
 
 		m_nParticleCount = PARTICLECOUNT;

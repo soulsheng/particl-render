@@ -24,7 +24,7 @@
 	{
 		// 构造、析构
 	public:
-		vgFountain(vgKernel::Vec3 pos, String particleName);
+		vgFountain( float4 pos, String particleName );
 		vgFountain();
 		virtual	~vgFountain();
 		
@@ -32,15 +32,18 @@
 
 		// 从父类继承函数
 	public:
-		virtual void	Initialize();	//初始化
+		virtual void	Initialize(tagPropOCL* propOCL);	//初始化
 		virtual void	render();  //渲染
 
 		void UpdateEachFrame();			 //每帧更新
 		void resetPosition( int index );
 		void updatePosition( int index );
-		void resetPosition( tagDROP* pParticle );
+		void resetPosition( int index, tagDROP* pParticle );
 		void updatePosition( tagDROP* pParticle );
 		void initializeVBO();
+
+		void SetupKernel();
+		void ExecuteKernel();
 
 	public:
 
@@ -68,6 +71,16 @@
 		tagDROP  *pCurrentParticle;	
 		 
 		GLuint	m_nIDVBO;
+
+	protected:
+		struct  OCLKernelArguments
+		{
+			cl_mem m_pOclBuffer ;
+
+			size_t globalWorkSize[2];
+			size_t localWorkSize[2];
+		};
+		OCLKernelArguments m_oclKernelArg;
 
 	}; // 喷泉类 class    vgFountain
 		

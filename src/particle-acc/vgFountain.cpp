@@ -2,10 +2,11 @@
 // includes
 #include <stdafx.h>
 #include "vgFountain.h"
+#include "utils.h"
 
 // class vgFountain
 
-	vgFountain::vgFountain(vgKernel::Vec3 pos, String particleName ) 
+	vgFountain::vgFountain( float4 pos, String particleName ) 
 		:ParticleBase(pos, particleName, "")
 	{
 		setDefault();
@@ -61,59 +62,70 @@
 	
 	void vgFountain::resetPosition( int index )
 	{
-		m_pdrop [index].position =  m_Position ;
+		m_pdrop [index].position.s[0] =  m_Position.s[0] ;
+		m_pdrop [index].position.s[1] =  m_Position.s[1] ;
+		m_pdrop [index].position.s[2] =  m_Position.s[2] ;
 
-		m_pdrop [index].vgen.x =  m_height/100.0f;  //5.0f/100
-		m_pdrop [index].vgen.y = float (rand()%(int)m_width + 2 ) * (float)PI / 180.0f ;
-		m_pdrop [index].vgen.z = float (rand()%360)  * (float)PI / 180.0f ;
+		m_pdrop [index].vgen.s[0] =  m_height/100.0f;  //5.0f/100
+		m_pdrop [index].vgen.s[1] = float (rand()%(int)m_width + 2 ) * (float)PI / 180.0f ;
+		m_pdrop [index].vgen.s[2] = float (rand()%360)  * (float)PI / 180.0f ;
 
-		m_pdrop [index].vlen.x  = m_pdrop [index].vgen.x * (float)sin( m_pdrop [index].vgen.y )  *
-			(float)cos( m_pdrop [index].vgen.z );
-		m_pdrop [index].vlen.y  = m_pdrop [index].vgen.x * (float)cos( m_pdrop [index].vgen.y ) ;
-		m_pdrop [index].vlen.z  = m_pdrop [index].vgen.x * (float)sin( m_pdrop [index].vgen.y )  *
-			(float)sin( m_pdrop [index].vgen.z ) ;
+		m_pdrop [index].vlen.s[0]  = m_pdrop [index].vgen.s[0] * (float)sin( m_pdrop [index].vgen.s[1] )  *
+			(float)cos( m_pdrop [index].vgen.s[2] );
+		m_pdrop [index].vlen.s[1]  = m_pdrop [index].vgen.s[0] * (float)cos( m_pdrop [index].vgen.s[1] ) ;
+		m_pdrop [index].vlen.s[2]  = m_pdrop [index].vgen.s[0] * (float)sin( m_pdrop [index].vgen.s[1] )  *
+			(float)sin( m_pdrop [index].vgen.s[2] ) ;
 
 	}
 
 	void vgFountain::updatePosition( int index )
 	{
-		m_pdrop [index].position.x	+=  m_pdrop [index].vlen.x ;
-		m_pdrop [index].position.y	+=  m_pdrop [index].vlen.y ;
-		m_pdrop [index].position.z	+=  m_pdrop [index].vlen.z ;
+		m_pdrop [index].position.s[0]	+=  m_pdrop [index].vlen.s[0] ;
+		m_pdrop [index].position.s[1]	+=  m_pdrop [index].vlen.s[1] ;
+		m_pdrop [index].position.s[2]	+=  m_pdrop [index].vlen.s[2] ;
 
-		m_pdrop [index].vlen.x		+=  m_pdrop [index].acc.x ;
-		m_pdrop [index].vlen.y		+=  m_pdrop [index].acc.y ;
-		m_pdrop [index].vlen.z		+=  m_pdrop [index].acc.z ;
+		m_pdrop [index].vlen.s[0]		+=  m_pdrop [index].acc.s[0] ;
+		m_pdrop [index].vlen.s[1]		+=  m_pdrop [index].acc.s[1] ;
+		m_pdrop [index].vlen.s[2]		+=  m_pdrop [index].acc.s[2] ;
 	}
 
-	void vgFountain::resetPosition( tagDROP* pParticle )
+	void vgFountain::resetPosition( int index, tagDROP* pParticle )
 	{
 			pParticle->position =  m_Position ;
-				
-			pParticle->vgen.x =  m_height/100.0f;  //5.0f/100
-			pParticle->vgen.y = float (rand()%(int)m_width + 2 ) * (float)PI / 180.0f ;
-			pParticle->vgen.z = float (rand()%360)  * (float)PI / 180.0f ;
-			
-			pParticle->vlen.x  = pParticle->vgen.x * (float)sin( pParticle->vgen.y )  *
-				(float)cos( pParticle->vgen.z );
-			pParticle->vlen.y  = pParticle->vgen.x * (float)cos( pParticle->vgen.y ) ;
-			pParticle->vlen.z  = pParticle->vgen.x * (float)sin( pParticle->vgen.y )  *
-				(float)sin( pParticle->vgen.z ) ;
+#if ENABLE_ONLY_Y
+			pParticle->vgen.s[0] =  m_height/100.0f;  //5.0f/100
+			pParticle->vgen.s[1] = 0.0f;//float (rand()%(int)m_width + 2 ) * (float)PI / 180.0f ;
+			pParticle->vgen.s[2] = float (rand()%360)  * (float)PI / 180.0f ;
+#else
+			pParticle->vgen.s[0] =  m_height/100.0f;  //5.0f/100
+			pParticle->vgen.s[1] = float (index%(int)m_width + 2 ) * (float)PI / 180.0f ;
+			pParticle->vgen.s[2] = float (index%360)  * (float)PI / 180.0f ;
+#endif
+
+			pParticle->vlen.s[0]  = pParticle->vgen.s[0] * (float)sin( pParticle->vgen.s[1] )  *
+				(float)cos( pParticle->vgen.s[2] );
+			pParticle->vlen.s[1]  = pParticle->vgen.s[0] * (float)cos( pParticle->vgen.s[1] ) ;
+			pParticle->vlen.s[2]  = pParticle->vgen.s[0] * (float)sin( pParticle->vgen.s[1] )  *
+				(float)sin( pParticle->vgen.s[2] ) ;
 
 	}
 	
 	void vgFountain::updatePosition( tagDROP* pParticle )
 	{
+		pParticle->position.s[0] +=  pParticle->vlen.s[0] ;
+		pParticle->position.s[1] +=  pParticle->vlen.s[1] ;
+		pParticle->position.s[2] +=  pParticle->vlen.s[2] ;
+#if 0
 		pParticle->position.x	+=  pParticle->vlen.x ;
 		pParticle->position.y	+=  pParticle->vlen.y ;
 		pParticle->position.z	+=  pParticle->vlen.z ;
-
-		pParticle->vlen.x		+=  pParticle->acc.x ;
-		pParticle->vlen.y		+=  pParticle->acc.y ;
-		pParticle->vlen.z		+=  pParticle->acc.z ;
+#endif
+		pParticle->vlen.s[0]		+=  pParticle->acc.s[0];
+		pParticle->vlen.s[1]		+=  pParticle->acc.s[1] ;
+		pParticle->vlen.s[2]		+=  pParticle->acc.s[2] ;
 	}
 
-	void vgFountain::Initialize()
+	void vgFountain::Initialize(tagPropOCL* propOCL)
 	{
 
 		if ( m_pdrop)
@@ -122,7 +134,7 @@
 		}
 		m_pdrop = new tagDROP[ m_nParticleCount ];
 
-		srand( GetTickCount() );
+		//srand( GetTickCount() );
 
 
 		GLuint	delayFrame ;
@@ -131,27 +143,39 @@
 		for (loop1=0;loop1< m_nParticleCount;loop1++)
 		{
 
-			m_pdrop[loop1].lifeFrame	=	rand()%delayFrame ;
-
-			m_pdrop[loop1].active		=	false;
+			m_pdrop[loop1].vgen.s[3]		=	0.0f;  // 激活状态
 						
-			resetPosition( m_pdrop + loop1 );
+			resetPosition( loop1, m_pdrop + loop1 );
+
+			m_pdrop[loop1].position.s[3]	=	rand()%delayFrame ; // 生命期
 			
-			m_pdrop[loop1].acc.x   = 0.0f;
-			m_pdrop[loop1].acc.y   =-m_speed/1000.0f/*-0.005f*/;
-			m_pdrop[loop1].acc.z   = 0.0f;				// Set Pull On Z Axis To Zero
+			m_pdrop[loop1].acc.s[0]   = 0.0f;
+			m_pdrop[loop1].acc.s[1]   =-m_speed/1000.0f/*-0.005f*/;
+			m_pdrop[loop1].acc.s[2]   = 0.0f;				// Set Pull On Z Axis To Zero
 		}
 
 #if RENDERMODE_VBO
 		initializeVBO();
 #endif
+
+#if ENABLE_OPENCL
+		m_pPropOCL = propOCL;
+		SetupKernel();
+#endif
+
 	} // void vgFountain::Init()
 	
 	void vgFountain::render()
 	{
 #if RENDERMODE_MOVING
+
+#if ENABLE_OPENCL
+		ExecuteKernel();
+#else
 		UpdateEachFrame();
-#endif
+#endif//ENABLE_OPENCL
+
+#endif//RENDERMODE_MOVING
 
 #if ENABLE_DRAW
 		glColor4f(1.0f  ,1.0f  ,1.0f ,1.0f);
@@ -160,7 +184,7 @@
 
 #if RENDERMODE_VBO
 		glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_nIDVBO);
-		glVertexPointer( 3, GL_FLOAT, sizeof(tagDROP) , BUFFER_OFFSET( 12 ) );
+		glVertexPointer( 3, GL_FLOAT, sizeof(tagDROP) , BUFFER_OFFSET( 0 ) );
 #else
 		glVertexPointer(3, GL_FLOAT, sizeof(tagDROP), &m_pdrop[0].position.x);
 #endif
@@ -211,16 +235,16 @@
 
 		for (loop1=0;loop1< m_nParticleCount ;loop1++)					// Loop Through All The Particles
 		{
-			if ( 0 == pParticleSet [loop1].lifeFrame )
+			if ( 0 == pParticleSet [loop1].position.s[3] )
 			{
-				pParticleSet [loop1].active	=	true;
+				pParticleSet [loop1].vgen.s[3]	=	1.0f;
 			}
 			else
 			{
-				pParticleSet [loop1].lifeFrame -- ;
+				pParticleSet [loop1].position.s[3] -- ;
 			}
 
-			if ( pParticleSet [loop1].active )							// If The Particle Is Active
+			if ( pParticleSet [loop1].vgen.s[3] == 1.0f )							// If The Particle Is Active
 			{	
 
 				// Update & Prepare for the next flame
@@ -230,10 +254,10 @@
 				updatePosition( loop1 );
 #endif
 			
-				if ( pParticleSet [loop1].position.y < m_prePosition.y )
+				if ( pParticleSet [loop1].position.s[1] < m_Position.s[1] )
 				{
 #if ENABLE_OPTIMIZE
-					resetPosition( pParticleSet+loop1 );
+					resetPosition( loop1, pParticleSet+loop1 );
 #else
 					resetPosition( loop1 );
 #endif
@@ -243,6 +267,10 @@
 
 		} // for(loop1) 遍历所有粒子
 
+
+		pParticleSet[0].position.s[0] += 0.001f;
+		pParticleSet[0].vlen.s[0] += 0.001f;
+		pParticleSet[0].acc.s[0] += 0.001f;
 #if	RENDERMODE_VBO
 		glUnmapBuffer( GL_ARRAY_BUFFER_ARB );
 		glBindBuffer( GL_ARRAY_BUFFER, NULL );
@@ -257,6 +285,102 @@
 		glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_nIDVBO);
 
 		glBufferDataARB(GL_ARRAY_BUFFER_ARB, m_nParticleCount * sizeof(tagDROP), m_pdrop, GL_STATIC_DRAW_ARB);
+	}
+
+	void vgFountain::SetupKernel()
+	{
+		if ( NULL == m_pPropOCL )
+		{
+			return;
+		}
+
+#if ENABLE_CL_GL_INTER
+		cl_int errcode_ret;
+		m_oclKernelArg.m_pOclBuffer = clCreateFromGLBuffer( m_pPropOCL->g_context, CL_MEM_WRITE_ONLY, m_nIDVBO, &errcode_ret);
+
+		if ( CL_SUCCESS != errcode_ret )
+		{
+			return;
+		}
+#else
+		const cl_mem_flags INFlags  = CL_MEM_COPY_HOST_PTR | CL_MEM_READ_ONLY; 
+		const cl_mem_flags OUTFlags = CL_MEM_COPY_HOST_PTR | CL_MEM_READ_WRITE;
+
+		m_oclKernelArg.m_pOclBuffer = clCreateBuffer( m_pPropOCL->g_context, INFlags,  m_nParticleCount * sizeof(tagDROP), m_pdrop,	NULL); 
+#endif
+
+		// thread size
+		m_oclKernelArg.localWorkSize[0] = LocalWorkX;
+		m_oclKernelArg.localWorkSize[1] = LocalWorkX;
+
+		size_t  workGroupSizeMaximum;
+		clGetKernelWorkGroupInfo( m_pPropOCL->g_kernel, m_pPropOCL->g_device_ID, CL_KERNEL_WORK_GROUP_SIZE, sizeof(size_t), (void *)&workGroupSizeMaximum, NULL);
+
+		int nElementSizePadding = roundToPowerOf2( m_nParticleCount );
+		if ( nElementSizePadding > workGroupSizeMaximum )
+		{
+			m_oclKernelArg.globalWorkSize[0] = workGroupSizeMaximum;
+			m_oclKernelArg.globalWorkSize[1] = nElementSizePadding / workGroupSizeMaximum;
+		}
+	}
+
+	void vgFountain::ExecuteKernel()
+	{
+		clEnqueueAcquireGLObjects( m_pPropOCL->g_cmd_queue, 1, &m_oclKernelArg.m_pOclBuffer, 0, 0, NULL);
+
+
+#if TIME_CL_MEMERY_CALCULATE
+		clSetKernelArg( m_pPropOCL->g_kernel, 0, sizeof(cl_mem), (void *) &m_oclKernelArg.m_pOclBuffer);
+
+		clSetKernelArg( m_pPropOCL->g_kernel, 1, sizeof(int), &m_nParticleCount);
+	
+		clSetKernelArg( m_pPropOCL->g_kernel, 2, sizeof(float), &m_Position.s[0]);
+		clSetKernelArg( m_pPropOCL->g_kernel, 3, sizeof(float), &m_Position.s[1]);
+		clSetKernelArg( m_pPropOCL->g_kernel, 4, sizeof(float), &m_Position.s[2]);
+		clSetKernelArg( m_pPropOCL->g_kernel, 5, sizeof(float), &m_height);
+		clSetKernelArg( m_pPropOCL->g_kernel, 6, sizeof(float), &m_width);
+
+		cl_event g_perf_event = NULL;
+		cl_int err = CL_SUCCESS;
+		// execute kernel, pls notice g_bAutoGroupSize
+#if LocalWorkSizeDef
+		err= clEnqueueNDRangeKernel( m_pPropOCL->g_cmd_queue, m_pPropOCL->g_kernel, 2, NULL, m_oclKernelArg.globalWorkSize, NULL, 0, NULL, &g_perf_event);
+#else
+		err= clEnqueueNDRangeKernel( m_pPropOCL->g_cmd_queue, m_pPropOCL->g_kernel, 2, NULL, m_oclKernelArg.globalWorkSize, m_oclKernelArg.localWorkSize, 0, NULL, &g_perf_event);
+#endif
+		if (err != CL_SUCCESS)
+		{
+			printf("ERROR: Failed to execute kernel...\n");
+			return ;
+		}
+		err = clWaitForEvents(1, &g_perf_event);
+		if (err != CL_SUCCESS)
+		{
+			printf("ERROR: Failed to clWaitForEvents...\n");
+			return ;
+		}
+#endif//TIME_CL_MEMERY_CALCULATE
+
+		clEnqueueReleaseGLObjects( m_pPropOCL->g_cmd_queue, 1, &m_oclKernelArg.m_pOclBuffer, 0, 0, 0);
+		clFinish( m_pPropOCL->g_cmd_queue );
+
+#if 0
+		float* pVertexArrayDynamic = &m_pdrop[0].position.s[0];
+		err = clEnqueueReadBuffer( m_pPropOCL->g_cmd_queue, m_oclKernelArg.m_pOclBuffer, CL_TRUE, 0, m_nParticleCount * sizeof(tagDROP) , pVertexArrayDynamic, 0, NULL, NULL);
+		if (err != CL_SUCCESS)
+		{
+			printf("ERROR: Failed to clEnqueueReadBuffer...\n");
+			return ;
+		}
+#else
+		glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_nIDVBO);
+		tagDROP  *pParticleSet = (tagDROP  *)glMapBuffer( GL_ARRAY_BUFFER, GL_READ_WRITE );
+		pParticleSet[0].position.s[0] += 0.001f;
+		pParticleSet[0].vlen.s[0] += 0.001f;
+		pParticleSet[0].acc.s[0] += 0.001f;
+		glUnmapBuffer( GL_ARRAY_BUFFER_ARB );
+		glBindBuffer( GL_ARRAY_BUFFER, NULL );
+#endif
 	}
 
 	

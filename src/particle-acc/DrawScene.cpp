@@ -109,9 +109,9 @@ int DrawScene::InitGL( )
 #endif
 
 
-	m_particleMngr.addParticleNode("", PARTICLE_TYPE_FOUNTAIN );
 	tagPropOCL* _propOCL = oclManager.Setup_OpenCL( KernelFileNameString, KernelFunctionNameString );
-	m_particleMngr.setPropOCL( _propOCL );
+	m_particleMngr.addParticleNode("", PARTICLE_TYPE_FOUNTAIN , _propOCL);
+
 
 	return TRUE;
 }

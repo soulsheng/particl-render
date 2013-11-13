@@ -80,6 +80,12 @@ using namespace std;
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
+#define  LocalWorkX		8
+#define  LocalWorkY		8
+#define  LocalWorkSizeDef	1//局部线程块采用默认数目
+
+#define ENABLE_OPENCL		1	//OpenCL
+#define ENABLE_OPENCL_CPU	1	//OpenCL CPU
 
 #define ENABLE_CL_GL_INTER	1//OpenCl OpenGL 互操作
 
@@ -88,5 +94,10 @@ using namespace std;
 #define TIME_CL_MEMERY_CALCULATE	1// 测量OpenCL内存数据计算时间
 
 #define NAME_STRING_PLATFORM_1	"Intel(R) OpenCL"
+#if ENABLE_OPENCL_CPU
 #define NAME_STRING_PLATFORM	"AMD Accelerated Parallel Processing"
-#define NAME_STRING_PLATFORM_2	"NVIDIA CUDA"
+#else
+#define NAME_STRING_PLATFORM	"NVIDIA CUDA"
+#endif
+
+#define ENABLE_ONLY_Y		0 // 自由落体

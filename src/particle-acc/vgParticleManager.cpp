@@ -13,7 +13,7 @@
 
 	}	
 	//----------------------------------------------------------------
-	ParticleBase* ParticleManager::addParticleNode( String name, E_PARTICLE_TYPE type )
+	ParticleBase* ParticleManager::addParticleNode( String name, E_PARTICLE_TYPE type, tagPropOCL* propOCL )
 	{
 		ParticleBase *node = getParticleNodeByName( name );
 
@@ -25,7 +25,7 @@
 		switch(type)
 		{
 		case PARTICLE_TYPE_FOUNTAIN:
-			node = new vgFountain( vgKernel::Vec3(70.0f, 50.0f, 520.0f), name);
+			node = new vgFountain( float4(70.0f, 50.0f, 520.0f), name);
 			break;
 
 		case PARTICLE_TYPE_FIRE:
@@ -37,7 +37,7 @@
 
 		if(node)
 		{
-			node->Initialize();
+			node->Initialize( propOCL );
 			addParticleNode( node );
 
 			int number = _particleNodeVec.size();
