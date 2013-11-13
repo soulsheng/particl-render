@@ -14,24 +14,14 @@
 /************************************************************************/
 
 
-#include <vgParticle/vgParticle.h>
-
-#include <vgTexture/vgtBillboard.h>
-#include <vgTexture/oldTex/vgtEffectTexture.h>
-
-namespace vgParticle
-{	
-
-	//class QuadtreeSceneManager;
-	//const CategoryType NODE_TYPE_FOUNTAIN	= 31;
-
+#include "vgParticle.h"
 
 	// 喷泉类 class    vgFountain
 	class  vgFountain : public ParticleBase
 	{
 		// 构造、析构
 	public:
-		vgFountain(vgKernel::Vec3 pos, String particleName, String textureFileName);
+		vgFountain(vgKernel::Vec3 pos, String particleName);
 		vgFountain();
 		virtual	~vgFountain();
 		
@@ -43,7 +33,7 @@ namespace vgParticle
 		virtual void	render();  //渲染
 
 		void UpdateEachFrame();			 //每帧更新
-		void updateBoundingBox();
+
 	public:
 		// 水珠结构体 struct tagDROP
 		typedef struct	tagDROP					
@@ -55,13 +45,11 @@ namespace vgParticle
 			vgKernel::Vec3	vlen;			//  速度
 			vgKernel::Vec3	acc;			//  加速度
 
-			vgTexture::Billboard	bb;
 		} tagDROP, * LPDROP;  // 水珠结构体 struct tagDROP
 		
 		tagDROP  *m_pdrop;			//  定义指针指向 动态申请的保存喷泉粒子系统属性的 \
 		
-		vgTexture::EffectTexturePtr  m_pTexture;
-		
+	
 		float	maxWidth	;
 
 		float	maxHeight	;
@@ -84,5 +72,4 @@ namespace vgParticle
 
 	}; // 喷泉类 class    vgFountain
 		
-} // namespace vgCore
 #endif // _CFOUNTIN_H_INCLUDED_

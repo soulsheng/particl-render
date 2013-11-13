@@ -1,29 +1,12 @@
 
 // includes
-#include <ParticleStableHeaders.h>
-#include "vgParticle/vgFountain.h"
-
-#include <vgTexture/vgtEffectTextureManager.h>
-#include <vgRenderer/vgkCamMgrHolder.h>
-#include <vgRenderer/vgkCamMgrImpl.h>
-#include <vgLibrary/vgkMath.h>
-
-#if 0
-#include <vgConf/vgcoExeConfig.h>
-
-#define VGDATA_PATHCONF						"DataPathConfig"
-#define VGDATA_PATHCONF_TEXTURE_PATH		"TexturePath"
-
-#define VGDATA_FILECONF						"DataFileConfig"
-#define VGDATA_FILECONF_TEXTURE_NAME		"FountainTexName"
-#endif
+#include <stdafx.h>
+#include "vgFountain.h"
 
 // class vgFountain
-namespace vgParticle
-{
-#undef PI
-	vgFountain::vgFountain(vgKernel::Vec3 pos, String particleName, String textureFileName) 
-		:ParticleBase(pos, particleName, textureFileName)
+
+	vgFountain::vgFountain(vgKernel::Vec3 pos, String particleName ) 
+		:ParticleBase(pos, particleName, "")
 	{
 		setDefault();
 	}
@@ -79,12 +62,6 @@ namespace vgParticle
 	
 	void vgFountain::Initialize()
 	{
-		//assert( m_pTexture.isNull() );
-		//m_pTexture = vgCore::TextureManager::getSingleton().getTexturePtr( m_texturename );
-		if( !m_texturename.empty() )
-		{
-			m_pTexture = vgTexture::EffectTextureManager::getSingleton().getTexturePtr( m_texturename );
-		}
 
 		if ( m_pdrop)
 		{
@@ -108,8 +85,8 @@ namespace vgParticle
 			m_pdrop[loop1].position =  m_Position ;
 				
 			m_pdrop[loop1].vgen.x =  m_height/100.0f;  //5.0f/100
-			m_pdrop[loop1].vgen.y = float (rand()%(int)m_width + 2 ) * vgKernel::Math::PI / 180.0f ;
-			m_pdrop[loop1].vgen.z = float (rand()%360)  * vgKernel::Math::PI / 180.0f ;
+			m_pdrop[loop1].vgen.y = float (rand()%(int)m_width + 2 ) * PI / 180.0f ;
+			m_pdrop[loop1].vgen.z = float (rand()%360)  * PI / 180.0f ;
 			
 			m_pdrop[loop1].vlen.x  = m_pdrop[loop1].vgen.x * (float)sin( m_pdrop[loop1].vgen.y )  *
 				(float)cos( m_pdrop[loop1].vgen.z );
@@ -120,15 +97,8 @@ namespace vgParticle
 			m_pdrop[loop1].acc.x   = 0.0f;
 			m_pdrop[loop1].acc.y   =-m_speed/1000.0f/*-0.005f*/;
 			m_pdrop[loop1].acc.z   = 0.0f;				// Set Pull On Z Axis To Zero
-
-			m_pdrop[loop1].bb.setHeight( m_PartLenth) ;
-			m_pdrop[loop1].bb.setWidth( m_PartWidth) ;
-			//m_pdrop[loop1].bb.setTexturePtr( m_pTexture );
-			m_pdrop[loop1].bb.setRenderType( vgTexture::Billboard::/*RENDERTYPE_EYE_ORIENTED*/RENDERTYPE_ROTATE_Y );
 		}
 		
-		updateBoundingBox();
-				
 	} // void vgFountain::Init()
 	
 	void vgFountain::render()
@@ -149,10 +119,6 @@ namespace vgParticle
 		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE/*GL_REPLACE*/);
 		glEnable(GL_TEXTURE_2D) ;
 
-		if( !m_pTexture.isEmpty() )
-		{
-			m_pTexture->useBind();
-		}
 
 		glColor4f(1.0f  ,1.0f  ,1.0f ,1.0f);
 				
@@ -162,21 +128,17 @@ namespace vgParticle
 		{
 			pCurrentParticle	= m_mapFountainParticleItor->second ;
 
-			pCurrentParticle->bb.setPosition( pCurrentParticle->position );
+			
+			float x=pCurrentParticle->position.x;						// Grab Our Particle X Position
+			float y=pCurrentParticle->position.y;						// Grab Our Particle Y Position
+			float z=pCurrentParticle->position.z;					// Particle Z Pos + Zoom
 
-			pCurrentParticle->bb.updateCurrentViewVectors();
-
-			pCurrentParticle->bb./*drawUsingEyeOriented*/drawUsingRotatedY();
-			//float x=pCurrentParticle->position.x;						// Grab Our Particle X Position
-			//float y=pCurrentParticle->position.y;						// Grab Our Particle Y Position
-			//float z=pCurrentParticle->position.z;					// Particle Z Pos + Zoom
-
-			//glBegin( GL_QUADS );		
-			//glTexCoord2d(1,1); glVertex3f(x+0.2f, y+0.4f, z+0.0f); // Top Right
-			//glTexCoord2d(0,1); glVertex3f(x-0.2f, y+0.4f, z+0.0f); // Top Left
-			//glTexCoord2d(0,0); glVertex3f(x-0.2f, y-0.4f, z+0.0f); // Bottom Right
-			//glTexCoord2d(1,0); glVertex3f(x+0.2f, y-0.4f, z+0.0f); // Bottom Left
-			//glEnd();
+			glBegin( GL_QUADS );		
+			glTexCoord2d(1,1); glVertex3f(x+0.2f, y+0.4f, z+0.0f); // Top Right
+			glTexCoord2d(0,1); glVertex3f(x-0.2f, y+0.4f, z+0.0f); // Top Left
+			glTexCoord2d(0,0); glVertex3f(x-0.2f, y-0.4f, z+0.0f); // Bottom Right
+			glTexCoord2d(1,0); glVertex3f(x+0.2f, y-0.4f, z+0.0f); // Bottom Left
+			glEnd();
 			
 		}// for (int loop)
 		
@@ -214,21 +176,18 @@ namespace vgParticle
 			{	
 				// 粒子 按离视点距离的远近顺序 放入渲染队列
 
-//////////////////////////////////////////////////////////////////////////chunyongma
-				//vgKernel::Vec3 &pp =  QuadtreeSceneManager::getSingleton().m_pCurrentCamera->getCurrentPosition();
-				//vgKernel::Vec3 &pp =  vgCam::CamManager::getSingleton().getCurrentPosition();
-				vgKernel::Vec3 camPos = vgKernel::CamMgrHolder::getSingleton().getCamManager()->getCurrentPosition();
-
-				rayFromEye =  vgKernel::Vec3( camPos.x, camPos.y, camPos.z)   - m_pdrop [loop1].position;
-
-				distanceFromEye	=  rayFromEye.length() ;
+				distanceFromEye	=  0.0f;//rayFromEye.length() ;
 
 				m_mapFountainParticle.insert( m_pairFountainParticle(distanceFromEye,  m_pdrop + loop1 ) );
 
 				// Update & Prepare for the next flame
-				m_pdrop [loop1].position	+=  m_pdrop [loop1].vlen ;
+				m_pdrop [loop1].position.x	+=  m_pdrop [loop1].vlen.x ;
+				m_pdrop [loop1].position.y	+=  m_pdrop [loop1].vlen.y ;
+				m_pdrop [loop1].position.z	+=  m_pdrop [loop1].vlen.z ;
 
-				m_pdrop [loop1].vlen		+=  m_pdrop  [loop1].acc ;
+				m_pdrop [loop1].vlen.x		+=  m_pdrop  [loop1].acc.x ;
+				m_pdrop [loop1].vlen.y		+=  m_pdrop  [loop1].acc.y ;
+				m_pdrop [loop1].vlen.z		+=  m_pdrop  [loop1].acc.z ;
 			
 				if ( m_pdrop [loop1].position.y < m_prePosition.y )
 				{
@@ -237,8 +196,8 @@ namespace vgParticle
 					m_pdrop[loop1].position =  m_Position ;
 
 					m_pdrop[loop1].vgen.x =  m_height/100.0f;  //5.0f/100
-					m_pdrop[loop1].vgen.y = float (rand()%(int)m_width + 2 ) * (float)vgKernel::Math::PI / 180.0f ;
-					m_pdrop[loop1].vgen.z = float (rand()%360)  * (float)vgKernel::Math::PI / 180.0f ;
+					m_pdrop[loop1].vgen.y = float (rand()%(int)m_width + 2 ) * (float)PI / 180.0f ;
+					m_pdrop[loop1].vgen.z = float (rand()%360)  * (float)PI / 180.0f ;
 
 					m_pdrop[loop1].vlen.x  = m_pdrop[loop1].vgen.x * (float)sin( m_pdrop[loop1].vgen.y )  *
 						(float)cos( m_pdrop[loop1].vgen.z );
@@ -254,25 +213,4 @@ namespace vgParticle
 
 	}// void vgFountain::UpdateEachFrame()
 
-	void vgFountain::updateBoundingBox()
-	{
-		maxHeight	=	( m_height * m_height ) / ( 20.0f * m_speed ) ;
-		maxWidth	=	maxHeight * sin (vgKernel::Math::PI * m_width / 90.0f) * 1.25f;
-
-		vgKernel::Box &m_BoundryBox = box;
-		m_BoundryBox._maxVertex.x = m_Position.x + maxWidth;
-		m_BoundryBox._maxVertex.y = m_Position.y + maxHeight;
-		m_BoundryBox._maxVertex.z = m_Position.z + maxWidth;
-
-		m_BoundryBox._minVertex.x = m_Position.x - maxWidth;
-		m_BoundryBox._minVertex.y = m_Position.y ;
-		m_BoundryBox._minVertex.z = m_Position.z - maxWidth;
-
-		//return	m_BoundryBox;
-	}	//BoundingBox updateBoundingBox()
-
-
 	
-	
-	
-}	//	namespace vgCore

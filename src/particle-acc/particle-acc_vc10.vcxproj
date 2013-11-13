@@ -168,17 +168,24 @@
     </ClCompile>
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="timerOMP.cpp" />
+    <ClCompile Include="vgFountain.cpp" />
+    <ClCompile Include="vgParticle.cpp" />
+    <ClCompile Include="vgParticleManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DrawScene.h" />
     <ClInclude Include="MilkshapeModel.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="ParticleDefinition.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StructMS3D.h" />
     <ClInclude Include="math\math2.h" />
     <ClInclude Include="math\vgkTimer.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="timerOMP.h" />
+    <ClInclude Include="vgFountain.h" />
+    <ClInclude Include="vgParticle.h" />
+    <ClInclude Include="vgParticleManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="math\matrix.inl" />

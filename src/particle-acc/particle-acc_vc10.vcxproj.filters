@@ -39,6 +39,15 @@
     <ClCompile Include="particle-acc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="vgFountain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vgParticle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vgParticleManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DrawScene.h">
@@ -66,6 +75,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="timerOMP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgFountain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgParticle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vgParticleManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleDefinition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

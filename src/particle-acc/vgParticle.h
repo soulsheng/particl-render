@@ -4,26 +4,8 @@
 
 
 #include "ParticleDefinition.h"
-#include <vgRenderer/vgkRenderer.h>
-#include <vgRenderer/vgkRendererObserver.h>
-#include <vgLibrary/vgkBox.h>
-#include <vgLibrary/vgkSharePtr.h>
-
-#include <vgLibrary/vgkStringPairVector.h>
-// defines
-//#define		PI				 3.14159265
 
 
-//////////////////////////////////////////////////////////////////////////
-// classes
-namespace vgParticle
-{
-	/*
-	5010 -- 5030之间为QuadTreeSceneMananger的管辖范围之内
-	*/
-	const vgKernel::RendererType RENDERER_TYPE_PARTICLE = 5011;
-	
-	//const CategoryType NODE_TYPE_PARTICLE	= 30;
 
 	enum	E_PARTICLE_TYPE
 	{
@@ -36,15 +18,13 @@ namespace vgParticle
 		PARTICLE_TYPE_COUNT
 	};
 
-	class  PARTICLEMODULE_API ParticleBase : public vgKernel::Renderer
+	class   ParticleBase 
 	{
 	public:
 		//	Part 0 :新增属性，相对class Node
 		String _meshName;
-		vgKernel::UniqueID _uniqueID;
 		float	_squaredDistanceToViewer;
 
-		vgKernel::Box box;
 		vgKernel::Vec3 m_Position;//起始点
 		bool m_isVisible;
 		
@@ -75,12 +55,10 @@ namespace vgParticle
 		{	
 			m_height =	height;
 
-			translate( 0,0,0 );
 		}
 		void SetWidth (float width )	
 		{	
 			m_width	=	width;
-			translate( 0,0,0 );
 
 		}
 		void SetSpeed (float speed )	{	m_speed	=	speed;	}
@@ -96,24 +74,14 @@ namespace vgParticle
 		String	getSubTypeString()				{	return m_strSubType;}
 		void	setSubType(String ptype)	{	m_strSubType = ptype;}
 
-
-	public:
-		//	实现父类的虚函数
-		virtual	void	updateBoundingBox();
-
 	public:
 		//	自定义的虚函数
 		virtual	void Initialize(){}	//初始化
-		virtual	void UpdatePos();
 
 	protected:
-		void	configTextureName();
 		void	setDefault();
 
 	public:
-		//	自定义的其它功能函数
-		int saveToString( vgKernel::StringPairVector& fields );
-		int readFromString( const vgKernel::StringPairVector& fields );
 
 		// 构造 虚构
 		ParticleBase(vgKernel::Vec3 pos, String particleName, String textureFileName);
@@ -138,60 +106,25 @@ namespace vgParticle
 			_meshName = newname;
 		}
 
-		virtual vgKernel::UniqueID getUniqueID()
-		{
-			return _uniqueID;
-		}
 
-		virtual void translate(const float& x, const float& y, const float& z);
-		
 
-		virtual void rotateSelf(const float& angle, const float& x, const float& y, const float& z)
-		{
-
-		}
-
-		virtual void scale(const float& cx, const float& cy, const float& cz, const float& x, const float& y, const float& z)
-		{
-
-		}
-
-		virtual void rotate(const float& angle, const float& cx, const float& cy, const float& cz, 
-			const float& x, const float& y, const float& z) 
-		{
-
-		}
-
-		virtual std::pair<bool, float> testIntersectWithTriangles( 
-			const vgKernel::Ray& ray );
-
-		virtual vgKernel::Box getBoundingBox()
-		{
-			return box;
-		}
 
 		virtual long getNumOfTriangles()	{ return 0;}
 
 		/**
 		注意,返回的是Distance的平方
 		*/
-		virtual float setDistanceToViewer( const vgKernel::Vec3& viewer_pos  );
 
 		virtual void	render(){}
 
-		virtual vgKernel::RendererType getType() //lss
-		{
-			return RENDERER_TYPE_PARTICLE;
-		}
 #endif		
 
 	protected:
-		vgKernel::StringVector	_xmlElements;
 
 	};// class  ParticleBase
-	typedef vgKernel::SharePtr<vgParticle::ParticleBase> ParticleNodePtr;
-	typedef vector<ParticleNodePtr> ParticleNodePtrVec;
 
-}// namespace vgParticle
+
+	typedef vector<ParticleBase*> ParticleNodePtrVec;
+	typedef vector<ParticleBase*>::iterator ParticleNodePtrVecItr;
 
 #endif  //   _SPECIALEFFECT_H_INCLUDED_
