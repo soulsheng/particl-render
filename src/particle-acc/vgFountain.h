@@ -36,8 +36,8 @@
 		virtual void	render();  //äÖÈ¾
 
 		void UpdateEachFrame();			 //Ã¿Ö¡¸üÐÂ
-		void resetPosition( int index );
-		void updatePosition( int index );
+		void resetPosition( tagDROP* pParticles, int index );
+		void updatePosition( tagDROP* pParticles, int index );
 		void resetPosition( int index, tagDROP* pParticle );
 		void updatePosition( tagDROP* pParticle );
 		void initializeVBO();
