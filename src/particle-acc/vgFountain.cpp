@@ -108,26 +108,29 @@
 		glColor4f(1.0f  ,1.0f  ,1.0f ,1.0f);
 
 #if RENDERMODE_POINT
-		glBegin( GL_POINTS );		
-#endif
+
+		glBegin( GL_POINTS );
+		for (int loop1=0;loop1< m_nParticleCount;loop1++)
+		{
+			glVertex3f( m_pdrop[loop1].position.x, m_pdrop[loop1].position.y, m_pdrop[loop1].position.z ); 
+		}// for (int loop)
+		glEnd();
+
+#else
 
 		for (int loop1=0;loop1< m_nParticleCount;loop1++)
 		{
-#if RENDERMODE_POINT
-			glVertex3f( m_pdrop[loop1].position.x, m_pdrop[loop1].position.y, m_pdrop[loop1].position.z ); 
-#else
+			float &x = m_pdrop[loop1].position.x;
+			float &y = m_pdrop[loop1].position.y;
+			float &z = m_pdrop[loop1].position.z;
 			glBegin( GL_QUADS );		
 			glTexCoord2d(1,1); glVertex3f(x+0.2f, y+0.4f, z+0.0f); // Top Right
 			glTexCoord2d(0,1); glVertex3f(x-0.2f, y+0.4f, z+0.0f); // Top Left
 			glTexCoord2d(0,0); glVertex3f(x-0.2f, y-0.4f, z+0.0f); // Bottom Right
 			glTexCoord2d(1,0); glVertex3f(x+0.2f, y-0.4f, z+0.0f); // Bottom Left
-			glEnd();
-#endif
-			
+			glEnd();			
 		}// for (int loop)
 
-#if RENDERMODE_POINT
-		glEnd();
 #endif
 		
 		
