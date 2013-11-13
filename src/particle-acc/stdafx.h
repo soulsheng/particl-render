@@ -41,7 +41,7 @@ using namespace std;
 #endif
 #endif
 
-#define RENDERMODE_VBO		0	//	1渲染模式VBO, 0渲染模式常规
+#define RENDERMODE_VBO		1	//	1渲染模式VBO, 0渲染模式常规
 #define RENDERMODE_POINT	1	//	1渲染点,  0渲染面
 
 #define RENDERMODE_MOVING	1	//  1 动画
@@ -77,3 +77,5 @@ using namespace std;
 #define ELEMENT_COUNT_MATIRX	(ELEMENT_COUNT_LINE*4)
 
 #define ONLY_RENDER_PARTICLE	1 // 仅渲染粒子系统
+
+#define BUFFER_OFFSET(i) ((char *)NULL + (i))

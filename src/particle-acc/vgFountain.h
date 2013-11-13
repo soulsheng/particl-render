@@ -16,6 +16,19 @@
 
 #include "vgParticle.h"
 
+	// 水珠结构体 struct tagDROP
+	typedef struct	tagDROP					
+	{
+		vgKernel::Vec3	vgen;			//	球形坐标系(r , a, b)，柱状发射模式
+		vgKernel::Vec3	position;		//  世界坐标系(x , y, z)
+		vgKernel::Vec3	vlen;			//  速度
+		vgKernel::Vec3	acc;			//  加速度
+		int		lifeFrame;				//	生命期
+		bool	active;					//	激活状态
+
+	} tagDROP, * LPDROP;  // 水珠结构体 struct tagDROP
+
+
 	// 喷泉类 class    vgFountain
 	class  vgFountain : public ParticleBase
 	{
@@ -33,23 +46,16 @@
 		virtual void	render();  //渲染
 
 		void UpdateEachFrame();			 //每帧更新
-		void resetPosition(int index);
-		void updatePosition(int index);
-	public:
-		// 水珠结构体 struct tagDROP
-		typedef struct	tagDROP					
-		{
-			vgKernel::Vec3	vgen;			//	球形坐标系(r , a, b)，柱状发射模式
-			vgKernel::Vec3	position;		//  世界坐标系(x , y, z)
-			vgKernel::Vec3	vlen;			//  速度
-			vgKernel::Vec3	acc;			//  加速度
-			int		lifeFrame;				//	生命期
-			bool	active;					//	激活状态
+		void resetPosition( int index );
+		void updatePosition( int index );
+		void resetPosition( tagDROP* pParticle );
+		void updatePosition( tagDROP* pParticle );
+		void initializeVBO();
 
-		} tagDROP, * LPDROP;  // 水珠结构体 struct tagDROP
-		
+	public:
+
 		tagDROP  *m_pdrop;			//  定义指针指向 动态申请的保存喷泉粒子系统属性的 \
-		
+
 	
 		float	maxWidth	;
 
@@ -70,6 +76,8 @@
 		float	distanceFromEye;
 
 		tagDROP  *pCurrentParticle;	
+		 
+		GLuint	m_nIDVBO;
 
 	}; // 喷泉类 class    vgFountain
 		

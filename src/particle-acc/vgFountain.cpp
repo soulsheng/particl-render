@@ -59,31 +59,58 @@
 		m_pdrop = NULL;
 	} 
 	
-	void vgFountain::resetPosition(int index)
+	void vgFountain::resetPosition( int index )
 	{
-			m_pdrop[index].position =  m_Position ;
-				
-			m_pdrop[index].vgen.x =  m_height/100.0f;  //5.0f/100
-			m_pdrop[index].vgen.y = float (rand()%(int)m_width + 2 ) * (float)PI / 180.0f ;
-			m_pdrop[index].vgen.z = float (rand()%360)  * (float)PI / 180.0f ;
-			
-			m_pdrop[index].vlen.x  = m_pdrop[index].vgen.x * (float)sin( m_pdrop[index].vgen.y )  *
-				(float)cos( m_pdrop[index].vgen.z );
-			m_pdrop[index].vlen.y  = m_pdrop[index].vgen.x * (float)cos( m_pdrop[index].vgen.y ) ;
-			m_pdrop[index].vlen.z  = m_pdrop[index].vgen.x * (float)sin( m_pdrop[index].vgen.y )  *
-				(float)sin( m_pdrop[index].vgen.z ) ;
+		m_pdrop [index].position =  m_Position ;
+
+		m_pdrop [index].vgen.x =  m_height/100.0f;  //5.0f/100
+		m_pdrop [index].vgen.y = float (rand()%(int)m_width + 2 ) * (float)PI / 180.0f ;
+		m_pdrop [index].vgen.z = float (rand()%360)  * (float)PI / 180.0f ;
+
+		m_pdrop [index].vlen.x  = m_pdrop [index].vgen.x * (float)sin( m_pdrop [index].vgen.y )  *
+			(float)cos( m_pdrop [index].vgen.z );
+		m_pdrop [index].vlen.y  = m_pdrop [index].vgen.x * (float)cos( m_pdrop [index].vgen.y ) ;
+		m_pdrop [index].vlen.z  = m_pdrop [index].vgen.x * (float)sin( m_pdrop [index].vgen.y )  *
+			(float)sin( m_pdrop [index].vgen.z ) ;
 
 	}
-	
-	void vgFountain::updatePosition(int index)
+
+	void vgFountain::updatePosition( int index )
 	{
 		m_pdrop [index].position.x	+=  m_pdrop [index].vlen.x ;
 		m_pdrop [index].position.y	+=  m_pdrop [index].vlen.y ;
 		m_pdrop [index].position.z	+=  m_pdrop [index].vlen.z ;
 
-		m_pdrop [index].vlen.x		+=  m_pdrop  [index].acc.x ;
-		m_pdrop [index].vlen.y		+=  m_pdrop  [index].acc.y ;
-		m_pdrop [index].vlen.z		+=  m_pdrop  [index].acc.z ;
+		m_pdrop [index].vlen.x		+=  m_pdrop [index].acc.x ;
+		m_pdrop [index].vlen.y		+=  m_pdrop [index].acc.y ;
+		m_pdrop [index].vlen.z		+=  m_pdrop [index].acc.z ;
+	}
+
+	void vgFountain::resetPosition( tagDROP* pParticle )
+	{
+			pParticle->position =  m_Position ;
+				
+			pParticle->vgen.x =  m_height/100.0f;  //5.0f/100
+			pParticle->vgen.y = float (rand()%(int)m_width + 2 ) * (float)PI / 180.0f ;
+			pParticle->vgen.z = float (rand()%360)  * (float)PI / 180.0f ;
+			
+			pParticle->vlen.x  = pParticle->vgen.x * (float)sin( pParticle->vgen.y )  *
+				(float)cos( pParticle->vgen.z );
+			pParticle->vlen.y  = pParticle->vgen.x * (float)cos( pParticle->vgen.y ) ;
+			pParticle->vlen.z  = pParticle->vgen.x * (float)sin( pParticle->vgen.y )  *
+				(float)sin( pParticle->vgen.z ) ;
+
+	}
+	
+	void vgFountain::updatePosition( tagDROP* pParticle )
+	{
+		pParticle->position.x	+=  pParticle->vlen.x ;
+		pParticle->position.y	+=  pParticle->vlen.y ;
+		pParticle->position.z	+=  pParticle->vlen.z ;
+
+		pParticle->vlen.x		+=  pParticle->acc.x ;
+		pParticle->vlen.y		+=  pParticle->acc.y ;
+		pParticle->vlen.z		+=  pParticle->acc.z ;
 	}
 
 	void vgFountain::Initialize()
@@ -108,13 +135,16 @@
 
 			m_pdrop[loop1].active		=	false;
 						
-			resetPosition( loop1 );
+			resetPosition( m_pdrop + loop1 );
 			
 			m_pdrop[loop1].acc.x   = 0.0f;
 			m_pdrop[loop1].acc.y   =-m_speed/1000.0f/*-0.005f*/;
 			m_pdrop[loop1].acc.z   = 0.0f;				// Set Pull On Z Axis To Zero
 		}
 
+#if RENDERMODE_VBO
+		initializeVBO();
+#endif
 	} // void vgFountain::Init()
 	
 	void vgFountain::render()
@@ -128,12 +158,20 @@
 
 #if RENDERMODE_POINT
 
+#if RENDERMODE_VBO
+		glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_nIDVBO);
+		glVertexPointer( 3, GL_FLOAT, sizeof(tagDROP) , BUFFER_OFFSET( 12 ) );
+#else
 		glVertexPointer(3, GL_FLOAT, sizeof(tagDROP), &m_pdrop[0].position.x);
+#endif
 		glEnableClientState( GL_VERTEX_ARRAY );
 
 		glDrawArrays(GL_POINTS, 0, m_nParticleCount );
 
 		glDisableClientState( GL_VERTEX_ARRAY );
+#if RENDERMODE_VBO
+		glBindBufferARB( GL_ARRAY_BUFFER_ARB, NULL );
+#endif
 
 #else
 
@@ -159,6 +197,12 @@
 	{
 
 		//m_mapFountainParticle.clear();
+#if	RENDERMODE_VBO
+		glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_nIDVBO);
+		tagDROP  *pParticleSet = (tagDROP  *)glMapBuffer( GL_ARRAY_BUFFER, GL_READ_WRITE );
+#else
+		tagDROP  *pParticleSet = m_pdrop;
+#endif
 
 		GLuint	delayFrame ;
 		delayFrame	= int ( m_height/m_speed * 20.0f + 0.5f);
@@ -167,30 +211,52 @@
 
 		for (loop1=0;loop1< m_nParticleCount ;loop1++)					// Loop Through All The Particles
 		{
-			if ( 0 == m_pdrop [loop1].lifeFrame )
+			if ( 0 == pParticleSet [loop1].lifeFrame )
 			{
-				m_pdrop [loop1].active	=	true;
+				pParticleSet [loop1].active	=	true;
 			}
 			else
 			{
-				m_pdrop [loop1].lifeFrame -- ;
+				pParticleSet [loop1].lifeFrame -- ;
 			}
 
-			if ( m_pdrop [loop1].active )							// If The Particle Is Active
+			if ( pParticleSet [loop1].active )							// If The Particle Is Active
 			{	
 
 				// Update & Prepare for the next flame
+#if ENABLE_OPTIMIZE
+				updatePosition( pParticleSet+loop1 );
+#else
 				updatePosition( loop1 );
+#endif
 			
-				if ( m_pdrop [loop1].position.y < m_prePosition.y )
+				if ( pParticleSet [loop1].position.y < m_prePosition.y )
 				{
+#if ENABLE_OPTIMIZE
+					resetPosition( pParticleSet+loop1 );
+#else
 					resetPosition( loop1 );
-				}// if ( m_pdrop [loop1].position.y< m_Position.y ) 粒子落后地面，重置属性
+#endif
+				}// if ( pParticle [loop1].position.y< m_Position.y ) 粒子落后地面，重置属性
 
-			}// if ( m_pdrop [loop1].active ) 粒子等待时刻结束，被激活
+			}// if ( pParticle [loop1].active ) 粒子等待时刻结束，被激活
 
 		} // for(loop1) 遍历所有粒子
 
+#if	RENDERMODE_VBO
+		glUnmapBuffer( GL_ARRAY_BUFFER_ARB );
+		glBindBuffer( GL_ARRAY_BUFFER, NULL );
+#endif
+
 	}// void vgFountain::UpdateEachFrame()
+
+	void vgFountain::initializeVBO()
+	{
+		glGenBuffers( 1, &m_nIDVBO);
+
+		glBindBufferARB(GL_ARRAY_BUFFER_ARB, m_nIDVBO);
+
+		glBufferDataARB(GL_ARRAY_BUFFER_ARB, m_nParticleCount * sizeof(tagDROP), m_pdrop, GL_STATIC_DRAW_ARB);
+	}
 
 	
