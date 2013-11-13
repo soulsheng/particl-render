@@ -111,20 +111,10 @@
 		glBegin( GL_POINTS );		
 #endif
 
-		for ( m_mapFountainParticleItor  = m_mapFountainParticle.end(), m_mapFountainParticleItor --;
-			m_mapFountainParticleItor != m_mapFountainParticle.begin();
-			m_mapFountainParticleItor -- )
+		for (int loop1=0;loop1< m_nParticleCount;loop1++)
 		{
-			pCurrentParticle	= m_mapFountainParticleItor->second ;
-
-			
-			float x=pCurrentParticle->position.x;						// Grab Our Particle X Position
-			float y=pCurrentParticle->position.y;						// Grab Our Particle Y Position
-			float z=pCurrentParticle->position.z;					// Particle Z Pos + Zoom
-
-
 #if RENDERMODE_POINT
-			glVertex3f( x, y, z ); 
+			glVertex3f( m_pdrop[loop1].position.x, m_pdrop[loop1].position.y, m_pdrop[loop1].position.z ); 
 #else
 			glBegin( GL_QUADS );		
 			glTexCoord2d(1,1); glVertex3f(x+0.2f, y+0.4f, z+0.0f); // Top Right
@@ -146,7 +136,7 @@
 	void vgFountain::UpdateEachFrame()
 	{
 
-		m_mapFountainParticle.clear();
+		//m_mapFountainParticle.clear();
 
 		GLuint	delayFrame ;
 		delayFrame	= int ( m_height/m_speed * 20.0f + 0.5f);
@@ -170,7 +160,7 @@
 
 				distanceFromEye	=  0.0f;//rayFromEye.length() ;
 
-				m_mapFountainParticle.insert( m_pairFountainParticle(distanceFromEye,  m_pdrop + loop1 ) );
+				//m_mapFountainParticle.insert( m_pairFountainParticle(distanceFromEye,  m_pdrop + loop1 ) );
 
 				// Update & Prepare for the next flame
 				m_pdrop [loop1].position.x	+=  m_pdrop [loop1].vlen.x ;

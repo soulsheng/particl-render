@@ -54,7 +54,7 @@
 
 		float	maxHeight	;
 		//////////////////////////////////////////////////////////////////////////
-		std::multimap <float ,tagDROP *> m_mapFountainParticle;
+		//std::multimap <float ,tagDROP *> m_mapFountainParticle;
 
 		std::multimap <float, tagDROP *>::iterator m_mapFountainParticleItor;
 
