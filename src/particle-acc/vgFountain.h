@@ -33,7 +33,8 @@
 		virtual void	render();  //渲染
 
 		void UpdateEachFrame();			 //每帧更新
-
+		void resetPosition(int index);
+		void updatePosition(int index);
 	public:
 		// 水珠结构体 struct tagDROP
 		typedef struct	tagDROP					

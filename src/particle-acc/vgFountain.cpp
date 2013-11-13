@@ -59,7 +59,33 @@
 		m_pdrop = NULL;
 	} 
 	
+	void vgFountain::resetPosition(int index)
+	{
+			m_pdrop[index].position =  m_Position ;
+				
+			m_pdrop[index].vgen.x =  m_height/100.0f;  //5.0f/100
+			m_pdrop[index].vgen.y = float (rand()%(int)m_width + 2 ) * (float)PI / 180.0f ;
+			m_pdrop[index].vgen.z = float (rand()%360)  * (float)PI / 180.0f ;
+			
+			m_pdrop[index].vlen.x  = m_pdrop[index].vgen.x * (float)sin( m_pdrop[index].vgen.y )  *
+				(float)cos( m_pdrop[index].vgen.z );
+			m_pdrop[index].vlen.y  = m_pdrop[index].vgen.x * (float)cos( m_pdrop[index].vgen.y ) ;
+			m_pdrop[index].vlen.z  = m_pdrop[index].vgen.x * (float)sin( m_pdrop[index].vgen.y )  *
+				(float)sin( m_pdrop[index].vgen.z ) ;
+
+	}
 	
+	void vgFountain::updatePosition(int index)
+	{
+		m_pdrop [index].position.x	+=  m_pdrop [index].vlen.x ;
+		m_pdrop [index].position.y	+=  m_pdrop [index].vlen.y ;
+		m_pdrop [index].position.z	+=  m_pdrop [index].vlen.z ;
+
+		m_pdrop [index].vlen.x		+=  m_pdrop  [index].acc.x ;
+		m_pdrop [index].vlen.y		+=  m_pdrop  [index].acc.y ;
+		m_pdrop [index].vlen.z		+=  m_pdrop  [index].acc.z ;
+	}
+
 	void vgFountain::Initialize()
 	{
 
@@ -82,23 +108,13 @@
 
 			m_pdrop[loop1].active		=	false;
 						
-			m_pdrop[loop1].position =  m_Position ;
-				
-			m_pdrop[loop1].vgen.x =  m_height/100.0f;  //5.0f/100
-			m_pdrop[loop1].vgen.y = float (rand()%(int)m_width + 2 ) * PI / 180.0f ;
-			m_pdrop[loop1].vgen.z = float (rand()%360)  * PI / 180.0f ;
-			
-			m_pdrop[loop1].vlen.x  = m_pdrop[loop1].vgen.x * (float)sin( m_pdrop[loop1].vgen.y )  *
-				(float)cos( m_pdrop[loop1].vgen.z );
-			m_pdrop[loop1].vlen.y  = m_pdrop[loop1].vgen.x * (float)cos( m_pdrop[loop1].vgen.y ) ;
-			m_pdrop[loop1].vlen.z  = m_pdrop[loop1].vgen.x * (float)sin( m_pdrop[loop1].vgen.y )  *
-				(float)sin( m_pdrop[loop1].vgen.z ) ;
+			resetPosition( loop1 );
 			
 			m_pdrop[loop1].acc.x   = 0.0f;
 			m_pdrop[loop1].acc.y   =-m_speed/1000.0f/*-0.005f*/;
 			m_pdrop[loop1].acc.z   = 0.0f;				// Set Pull On Z Axis To Zero
 		}
-		
+
 	} // void vgFountain::Init()
 	
 	void vgFountain::render()
@@ -159,37 +175,13 @@
 
 			if ( m_pdrop [loop1].active )							// If The Particle Is Active
 			{	
-				// 粒子 按离视点距离的远近顺序 放入渲染队列
-
-				distanceFromEye	=  0.0f;//rayFromEye.length() ;
-
-				//m_mapFountainParticle.insert( m_pairFountainParticle(distanceFromEye,  m_pdrop + loop1 ) );
 
 				// Update & Prepare for the next flame
-				m_pdrop [loop1].position.x	+=  m_pdrop [loop1].vlen.x ;
-				m_pdrop [loop1].position.y	+=  m_pdrop [loop1].vlen.y ;
-				m_pdrop [loop1].position.z	+=  m_pdrop [loop1].vlen.z ;
-
-				m_pdrop [loop1].vlen.x		+=  m_pdrop  [loop1].acc.x ;
-				m_pdrop [loop1].vlen.y		+=  m_pdrop  [loop1].acc.y ;
-				m_pdrop [loop1].vlen.z		+=  m_pdrop  [loop1].acc.z ;
+				updatePosition( loop1 );
 			
 				if ( m_pdrop [loop1].position.y < m_prePosition.y )
 				{
-					//srand( GetTickCount() );
-
-					m_pdrop[loop1].position =  m_Position ;
-
-					m_pdrop[loop1].vgen.x =  m_height/100.0f;  //5.0f/100
-					m_pdrop[loop1].vgen.y = float (rand()%(int)m_width + 2 ) * (float)PI / 180.0f ;
-					m_pdrop[loop1].vgen.z = float (rand()%360)  * (float)PI / 180.0f ;
-
-					m_pdrop[loop1].vlen.x  = m_pdrop[loop1].vgen.x * (float)sin( m_pdrop[loop1].vgen.y )  *
-						(float)cos( m_pdrop[loop1].vgen.z );
-					m_pdrop[loop1].vlen.y  = m_pdrop[loop1].vgen.x * (float)cos( m_pdrop[loop1].vgen.y ) ;
-					m_pdrop[loop1].vlen.z  = m_pdrop[loop1].vgen.x * (float)sin( m_pdrop[loop1].vgen.y )  *
-						(float)sin( m_pdrop[loop1].vgen.z ) ;
-
+					resetPosition( loop1 );
 				}// if ( m_pdrop [loop1].position.y< m_Position.y ) 粒子落后地面，重置属性
 
 			}// if ( m_pdrop [loop1].active ) 粒子等待时刻结束，被激活
