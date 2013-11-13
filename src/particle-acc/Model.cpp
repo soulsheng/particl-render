@@ -13,7 +13,7 @@
 #include "stdafx.h"
 
 #include "Model.h"
-#include "ms3d-acc.h"
+#include "particle-acc.h"
 //using namespace vgMs3d;
 #include <omp.h>
 
