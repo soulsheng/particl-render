@@ -41,7 +41,7 @@ using namespace std;
 #endif
 #endif
 
-#define RENDERMODE_VBO		1	//	1渲染模式VBO, 0渲染模式常规
+#define RENDERMODE_VBO		0	//	1渲染模式VBO, 0渲染模式常规
 #define RENDERMODE_POINT	1	//	1渲染点,  0渲染面
 
 #define RENDERMODE_MOVING	1	//  1 动画
@@ -84,8 +84,8 @@ using namespace std;
 #define  LocalWorkY		8
 #define  LocalWorkSizeDef	1//局部线程块采用默认数目
 
-#define ENABLE_OPENCL		1	//OpenCL
-#define ENABLE_OPENCL_CPU	1	//OpenCL CPU
+#define ENABLE_OPENCL		0	//OpenCL
+#define ENABLE_OPENCL_CPU	0	//OpenCL CPU
 
 #define ENABLE_CL_GL_INTER	1//OpenCl OpenGL 互操作
 
