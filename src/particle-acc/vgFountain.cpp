@@ -1,6 +1,6 @@
 
 // includes
-#include <stdafx.h>
+#include "stdafx.h"
 #include "vgFountain.h"
 #include "utils.h"
 
