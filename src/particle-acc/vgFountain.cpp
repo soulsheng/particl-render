@@ -51,6 +51,12 @@
 
 		//String texturePathBase = "L:\\SvnProject\\trunk_doc\\vrgis_DocAndCase\\test cases\\数据素材\\vgdb\\新建筑";
 		//m_texturename = texturePathBase + "\\data\\Texture\\Particle24.tga";
+
+		t = 0;
+		int r1 = (rand() % 9000) + 1000;
+		int r2 = (rand() % 900000) + 100000;
+		int r3 = (rand() % 1000000000) + 1000000000;
+		m_noiseGenerator.setParameter(r1, r2, r3);
 	}
 
 	vgFountain::~vgFountain()
@@ -120,9 +126,15 @@
 		pParticle->position.y	+=  pParticle->vlen.y ;
 		pParticle->position.z	+=  pParticle->vlen.z ;
 #endif
+		float   dx = (pParticle->position.s[0]-m_Position.s[0])*100;
+		float   dy = (pParticle->position.s[1]-m_Position.s[1])*10;
+		float	factorPerlinNoise = m_noiseGenerator.perlinNoise( pParticle->position.s[0], 0, (t++)%10000 );
 		pParticle->vlen.s[0]		+=  pParticle->acc.s[0];
 		pParticle->vlen.s[1]		+=  pParticle->acc.s[1] ;
 		pParticle->vlen.s[2]		+=  pParticle->acc.s[2] ;
+
+		pParticle->acc.s[0]		=  factorPerlinNoise/100 ;
+		//cout << factorPerlinNoise << "\t";
 	}
 
 	void vgFountain::Initialize(tagPropOCL* propOCL)

@@ -153,6 +153,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="COclManager.cpp" />
+    <ClCompile Include="common\PerlinNoise.cpp" />
     <ClCompile Include="common\utils.cpp" />
     <ClCompile Include="DrawScene.cpp" />
     <ClCompile Include="MilkshapeModel.cpp">
@@ -176,6 +177,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="COclManager.h" />
+    <ClInclude Include="common\PerlinNoise.h" />
     <ClInclude Include="common\utils.h" />
     <ClInclude Include="DrawScene.h" />
     <ClInclude Include="MilkshapeModel.h" />

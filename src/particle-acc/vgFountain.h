@@ -15,7 +15,7 @@
 
 
 #include "vgParticle.h"
-
+#include "PerlinNoise.h"
 	
 
 
@@ -82,6 +82,8 @@
 		};
 		OCLKernelArguments m_oclKernelArg;
 
+		PerlinNoise	m_noiseGenerator;// Perlin柏林噪声发生器
+		int r1,r2,r3, t; // Perlin柏林噪声参数
 	}; // 喷泉类 class    vgFountain
 		
 #endif // _CFOUNTIN_H_INCLUDED_

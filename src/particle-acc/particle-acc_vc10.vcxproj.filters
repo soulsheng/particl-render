@@ -57,6 +57,9 @@
     <ClCompile Include="COclManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="common\PerlinNoise.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DrawScene.h">
@@ -103,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="COclManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\PerlinNoise.h">
+      <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
