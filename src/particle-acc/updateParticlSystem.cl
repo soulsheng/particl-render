@@ -130,9 +130,69 @@ transformVectorByMatrix4One( const __global float4 *pInput, const __global int *
 
 }
 
+
+float interpolate(float x, float y, float a){
+	float val = (1 - cos(a * M_PI)) * 0.5;
+	return x * (1 - val) + y * val;
+}
+
+float noise(int x, int y, int r1, int r2, int r3){
+	int n = x + y * 57;
+	n = (n << 13) ^ n;
+
+	return (1.0 - ((n * (n * n * r1 + r2) + r3) & 0x7fffffff) / 1073741824.0);
+}
+
+float smooth(float x, float y, int r1, int r2, int r3 ){
+	float n1 = noise((int)x, (int)y , r1, r2, r3);
+	float n2 = noise((int)x + 1, (int)y  , r1, r2, r3);
+	float n3 = noise((int)x, (int)y + 1  , r1, r2, r3);
+	float n4 = noise((int)x + 1, (int)y + 1  , r1, r2, r3);
+
+	float i1 = interpolate(n1, n2, x - (int)x);
+	float i2 = interpolate(n3, n4, x - (int)x);
+
+	return interpolate(i1, i2, y - (int)y);
+}
+
+float scale(float from, float to, int scale, int t){
+	float direction = t % (scale * 2);
+
+	if(direction < scale){
+		return from + (to - from) * (float)(t % scale) / (float)scale;
+	} else {
+		return to - (to - from) * (float)(t % scale) / (float)scale;
+	}
+}
+
+float perlinNoise(float x, float y, int r1, int r2, int r3, int t ){
+	float total = 0.0;
+
+	float frequency = scale(0.010, 0.025, 5000, t);
+	float persistence = scale(0.20, 0.65, 5000, t);
+	float octaves = scale(2, 33, 5000, t);
+	float amplitude = 0.5;
+
+	x = x + t / 10;
+
+	for(int lcv = 0; lcv < octaves; ++lcv){
+		total += smooth(x * frequency, y * frequency, r1, r2, r3 ) * amplitude;
+		frequency *= 2;
+		amplitude *= persistence;
+	}
+
+	const float cloudCoverage = 0;
+	const float cloudDensity = 0.75;
+
+	total = (total + cloudCoverage) * cloudDensity;
+
+	return total;
+}
+
 __kernel void
 updateParticlSystem( const __global float4 *pParticleSet, int sizeMax, 
-					float m_PositionX, float m_PositionY, float m_PositionZ, float m_height , float m_width)
+					float m_PositionX, float m_PositionY, float m_PositionZ, float m_height , float m_width
+					,int r1, int r2, int r3, int t)
 {
 	size_t index = get_global_id(0) + get_global_id(1) *get_global_size(0);
 	
@@ -162,6 +222,11 @@ updateParticlSystem( const __global float4 *pParticleSet, int sizeMax,
 		pParticleSet [index*4+1].y		+=  pParticleSet [index*4+2].y ;
 		pParticleSet [index*4+1].z		+=  pParticleSet [index*4+2].z ;
 		
+		//float   dx = (pParticleSet [index*4+0].x-m_PositionX)*100;
+		float	factorPerlinNoise = perlinNoise( pParticleSet [index*4+0].x, 0.0f, r1, r2, r3, 100 );
+		pParticleSet [index*4+2].x		=  factorPerlinNoise/100 ;
+
+
 		if ( pParticleSet [index*4+0].y < 50.0f )
 		{
 			//resetPosition( pParticleSet+index );

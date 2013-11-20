@@ -53,9 +53,9 @@
 		//m_texturename = texturePathBase + "\\data\\Texture\\Particle24.tga";
 
 		t = 0;
-		int r1 = (rand() % 9000) + 1000;
-		int r2 = (rand() % 900000) + 100000;
-		int r3 = (rand() % 1000000000) + 1000000000;
+		r1 = (rand() % 9000) + 1000;
+		r2 = (rand() % 900000) + 100000;
+		r3 = (rand() % 1000000000) + 1000000000;
 		m_noiseGenerator.setParameter(r1, r2, r3);
 	}
 
@@ -126,13 +126,12 @@
 		pParticle->position.y	+=  pParticle->vlen.y ;
 		pParticle->position.z	+=  pParticle->vlen.z ;
 #endif
-		float   dx = (pParticle->position.s[0]-m_Position.s[0])*100;
-		float   dy = (pParticle->position.s[1]-m_Position.s[1])*10;
-		float	factorPerlinNoise = m_noiseGenerator.perlinNoise( pParticle->position.s[0], 0, (t++)%10000 );
 		pParticle->vlen.s[0]		+=  pParticle->acc.s[0];
 		pParticle->vlen.s[1]		+=  pParticle->acc.s[1] ;
 		pParticle->vlen.s[2]		+=  pParticle->acc.s[2] ;
 
+		float   dx = (pParticle->position.s[0]-m_Position.s[0])*100;
+		float	factorPerlinNoise = m_noiseGenerator.perlinNoise( pParticle->position.s[0], 0, 100 );
 		pParticle->acc.s[0]		=  factorPerlinNoise/100 ;
 		//cout << factorPerlinNoise << "\t";
 	}
@@ -349,6 +348,11 @@
 		clSetKernelArg( m_pPropOCL->g_kernel, 4, sizeof(float), &m_Position.s[2]);
 		clSetKernelArg( m_pPropOCL->g_kernel, 5, sizeof(float), &m_height);
 		clSetKernelArg( m_pPropOCL->g_kernel, 6, sizeof(float), &m_width);
+
+		clSetKernelArg( m_pPropOCL->g_kernel, 7, sizeof(int), &r1);
+		clSetKernelArg( m_pPropOCL->g_kernel, 8, sizeof(int), &r2);
+		clSetKernelArg( m_pPropOCL->g_kernel, 9, sizeof(int), &r3);
+		clSetKernelArg( m_pPropOCL->g_kernel, 10, sizeof(int), &t);
 
 		cl_event g_perf_event = NULL;
 		cl_int err = CL_SUCCESS;
