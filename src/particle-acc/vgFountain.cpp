@@ -6,7 +6,7 @@
 
 // class vgFountain
 
-	vgFountain::vgFountain( float4 pos, String particleName ) 
+	vgFountain::vgFountain( vector4 pos, String particleName ) 
 		:ParticleBase(pos, particleName, "")
 	{
 		setDefault();

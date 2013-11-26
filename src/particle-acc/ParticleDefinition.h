@@ -28,15 +28,15 @@ struct Vec3
 
 }
 
-struct float4
+struct vector4
 {
 	float x,y,z,w;
-	float4(float xVal, float yVal, float zVal, float wVal=1.0f)
+	vector4(float xVal, float yVal, float zVal, float wVal=1.0f)
 		: x(xVal), y(yVal), z(zVal), w(wVal) {}
-	float4(float xVal = 0.0f)
+	vector4(float xVal = 0.0f)
 		: x(xVal), y(xVal), z(xVal), w(xVal) {}
 
-	float4& operator+=(float4& refVal)
+	vector4& operator+=(vector4& refVal)
 	{
 		this->x += refVal.x ;
 		this->y += refVal.y ;

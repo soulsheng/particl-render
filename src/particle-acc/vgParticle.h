@@ -28,7 +28,7 @@
 		cl_float4 m_Position;//起始点
 		bool m_isVisible;
 		
-		float4 m_prePosition;//上一帧起始点
+		vector4 m_prePosition;//上一帧起始点
 
 	public:
 		//	新增属性，相对class Node
@@ -81,7 +81,7 @@
 	public:
 
 		// 构造 虚构
-		ParticleBase( float4 pos, String particleName, String textureFileName);
+		ParticleBase( vector4 pos, String particleName, String textureFileName);
 		ParticleBase();
 		virtual	~ParticleBase();
 			

@@ -24,7 +24,7 @@
 	{
 		// ¹¹Ôì¡¢Îö¹¹
 	public:
-		vgFountain( float4 pos, String particleName );
+		vgFountain( vector4 pos, String particleName );
 		vgFountain();
 		virtual	~vgFountain();
 		

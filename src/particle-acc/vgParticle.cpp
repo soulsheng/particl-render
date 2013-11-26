@@ -6,7 +6,7 @@
 
 	
 	//----------------------------------------------------------------
-	ParticleBase::ParticleBase( float4 pos, String particleName, String textureFileName)
+	ParticleBase::ParticleBase( vector4 pos, String particleName, String textureFileName)
 		:_meshName(particleName)
 	{
 		setDefault();
