@@ -42,7 +42,7 @@
 
 		void addParticleNode( ParticleBase *node);
 		void addParticleNode( E_PARTICLE_TYPE type );
-		ParticleBase* addParticleNode( String name, E_PARTICLE_TYPE type, tagPropOCL* propOCL );
+		ParticleBase* addParticleNode( String name, E_PARTICLE_TYPE type, tagPropOCL* propOCL, int id );
 
 		void renderParticleNode();
 

@@ -99,5 +99,12 @@ using namespace std;
 #else
 #define NAME_STRING_PLATFORM	"NVIDIA CUDA"
 #endif
+#define NAME_STRING_PLATFORM_GPU	"NVIDIA CUDA"
+#define NAME_STRING_PLATFORM_CPU	"AMD Accelerated Parallel Processing"
 
 #define ENABLE_ONLY_Y		0 // втсибДлЕ
+
+#define SIZE_NODE_ALL		10
+#define SIZE_NODE_CPU		5
+#define SIZE_NODE_GPU		(SIZE_NODE_ALL-SIZE_NODE_CPU)
+

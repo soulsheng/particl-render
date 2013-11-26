@@ -108,10 +108,27 @@ int DrawScene::InitGL( )
 	freopen( "CONOUT$","w",stdout);
 #endif
 
-	tagPropOCL* _propOCL = new tagPropOCL; // ParticleBase负责释放
-	oclManager.Setup_OpenCL( KernelFileNameString, KernelFunctionNameString, NAME_STRING_PLATFORM, _propOCL );
-	m_particleMngr.addParticleNode("", PARTICLE_TYPE_FOUNTAIN , _propOCL);
+	// CPU 节点
+	for (int i = 0; i<SIZE_NODE_CPU; i++ )
+	{
+		tagPropOCL* _propOCL = new tagPropOCL; // ParticleBase负责释放
+		oclManager.Setup_OpenCL( KernelFileNameString, KernelFunctionNameString, NAME_STRING_PLATFORM_CPU, _propOCL );
 
+		ostringstream os;
+		os << i ;
+		m_particleMngr.addParticleNode( os.str().c_str(), PARTICLE_TYPE_FOUNTAIN , _propOCL, i);
+	}
+
+	// GPU 节点
+	for (int i = 0; i<SIZE_NODE_GPU; i++ )
+	{
+		tagPropOCL* _propOCL = new tagPropOCL; // ParticleBase负责释放
+		oclManager.Setup_OpenCL( KernelFileNameString, KernelFunctionNameString, NAME_STRING_PLATFORM_GPU, _propOCL );
+		
+		ostringstream os;
+		os << i+SIZE_NODE_GPU ;
+		m_particleMngr.addParticleNode( os.str().c_str(), PARTICLE_TYPE_FOUNTAIN , _propOCL, i );
+	}
 
 	return TRUE;
 }

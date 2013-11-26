@@ -371,7 +371,7 @@
 			printf("ERROR: Failed to execute kernel...\n");
 			return ;
 		}
-		err = clWaitForEvents(1, &g_perf_event);
+		//err = clWaitForEvents(1, &g_perf_event);
 		if (err != CL_SUCCESS)
 		{
 			printf("ERROR: Failed to clWaitForEvents...\n");
