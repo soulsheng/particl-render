@@ -86,7 +86,7 @@ char *ReadSources(const char *fileName)
     return src;
 }
 
-cl_platform_id GetIntelOCLPlatform()
+cl_platform_id GetIntelOCLPlatform( const char *platform_name )
 {
     cl_platform_id pPlatforms[10] = { 0 };
     char pPlatformName[128] = { 0 };
@@ -102,7 +102,7 @@ cl_platform_id GetIntelOCLPlatform()
             return NULL;
         }
 
-        if (!strcmp(pPlatformName, NAME_STRING_PLATFORM))
+        if (!strcmp(pPlatformName, platform_name))
 			return pPlatforms[ui];
     }
 

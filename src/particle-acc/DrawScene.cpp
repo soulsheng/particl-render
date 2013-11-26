@@ -108,8 +108,8 @@ int DrawScene::InitGL( )
 	freopen( "CONOUT$","w",stdout);
 #endif
 
-
-	tagPropOCL* _propOCL = oclManager.Setup_OpenCL( KernelFileNameString, KernelFunctionNameString );
+	tagPropOCL* _propOCL = new tagPropOCL; // ParticleBase¸ºÔðÊÍ·Å
+	oclManager.Setup_OpenCL( KernelFileNameString, KernelFunctionNameString, NAME_STRING_PLATFORM, _propOCL );
 	m_particleMngr.addParticleNode("", PARTICLE_TYPE_FOUNTAIN , _propOCL);
 
 

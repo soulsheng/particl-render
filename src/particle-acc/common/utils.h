@@ -283,7 +283,7 @@ cl_int fillRandomFloatVecBuffer(	cl_command_queue* cmdqueue,
 
 char *ReadSources(const char *fileName);
 
-cl_platform_id GetIntelOCLPlatform();
+cl_platform_id GetIntelOCLPlatform( const char *platform_name );
 
 void BuildFailLog( cl_program program, cl_device_id device_id );
 

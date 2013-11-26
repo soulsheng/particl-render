@@ -67,6 +67,24 @@ struct tagPropOCL
 
 	cl_uint     g_min_align;
 	cl_device_id g_device_ID;
+
+	tagPropOCL()
+	{
+		g_context = NULL;
+		g_cmd_queue = NULL;
+		g_program = NULL;
+		g_kernel = NULL;
+
+		g_min_align = 0;
+		g_device_ID =0;
+	}
+	~tagPropOCL()
+	{
+		if( g_kernel ) {clReleaseKernel( g_kernel );  g_kernel = NULL;}
+		if( g_program ) {clReleaseProgram( g_program );  g_program = NULL;}
+		if( g_cmd_queue ) {clReleaseCommandQueue( g_cmd_queue );  g_cmd_queue = NULL;}
+		if( g_context ) {clReleaseContext( g_context );  g_context = NULL;}
+	}
 };
 
 #define PI		3.1415926

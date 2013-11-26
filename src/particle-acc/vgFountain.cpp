@@ -57,6 +57,8 @@
 		r2 = (rand() % 900000) + 100000;
 		r3 = (rand() % 1000000000) + 1000000000;
 		m_noiseGenerator.setParameter(r1, r2, r3);
+
+		m_pPropOCL = NULL;
 	}
 
 	vgFountain::~vgFountain()
@@ -64,6 +66,8 @@
 		delete[] m_pdrop;
 
 		m_pdrop = NULL;
+
+		delete m_pPropOCL;
 	} 
 	
 	void vgFountain::resetPosition( tagDROP* pParticles ,int index )

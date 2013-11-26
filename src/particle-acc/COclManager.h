@@ -23,7 +23,7 @@ public:
 
 	COclManager();
 	~COclManager();
-	tagPropOCL* Setup_OpenCL( const char *program_source , const char *kernel_name );
+	bool Setup_OpenCL( const char *program_source , const char *kernel_name, const char *platform_name, tagPropOCL* _propOCL );
 	void initialize();
 	void Cleanup();
 protected:
