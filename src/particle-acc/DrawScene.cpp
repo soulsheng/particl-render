@@ -116,7 +116,7 @@ int DrawScene::InitGL( )
 
 		ostringstream os;
 		os << i ;
-		m_particleMngr.addParticleNode( os.str().c_str(), PARTICLE_TYPE_FOUNTAIN , _propOCL, i);
+		m_particleMngr.addParticleNode( os.str().c_str(), PARTICLE_TYPE_FOUNTAIN , _propOCL, i , "CPU");
 	}
 
 	// GPU ½Úµã
@@ -127,7 +127,7 @@ int DrawScene::InitGL( )
 		
 		ostringstream os;
 		os << i+SIZE_NODE_GPU ;
-		m_particleMngr.addParticleNode( os.str().c_str(), PARTICLE_TYPE_FOUNTAIN , _propOCL, i );
+		m_particleMngr.addParticleNode( os.str().c_str(), PARTICLE_TYPE_FOUNTAIN , _propOCL, i , "GPU" );
 	}
 
 	return TRUE;

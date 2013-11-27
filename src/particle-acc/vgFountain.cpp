@@ -6,8 +6,8 @@
 
 // class vgFountain
 
-	vgFountain::vgFountain( vector4 pos, String particleName ) 
-		:ParticleBase(pos, particleName, "")
+	vgFountain::vgFountain( vector4 pos, String particleName, std::string platform_type ) 
+		:ParticleBase(pos, particleName, ""),m_ParallelPlatformName(platform_type)
 	{
 		setDefault();
 	}
@@ -380,7 +380,10 @@
 #endif//TIME_CL_MEMERY_CALCULATE
 
 		clEnqueueReleaseGLObjects( m_pPropOCL->g_cmd_queue, 1, &m_oclKernelArg.m_pOclBuffer, 0, 0, 0);
-		clFinish( m_pPropOCL->g_cmd_queue );
+		if ( m_ParallelPlatformName == "CPU")
+		{
+			clFinish( m_pPropOCL->g_cmd_queue );
+		}
 
 #if 0
 		float* pVertexArrayDynamic = &m_pdrop[0].position.s[0];

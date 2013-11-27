@@ -42,7 +42,7 @@
 
 		void addParticleNode( ParticleBase *node);
 		void addParticleNode( E_PARTICLE_TYPE type );
-		ParticleBase* addParticleNode( String name, E_PARTICLE_TYPE type, tagPropOCL* propOCL, int id );
+		ParticleBase* addParticleNode( String name, E_PARTICLE_TYPE type, tagPropOCL* propOCL, int id, std::string platform_type );
 
 		void renderParticleNode();
 

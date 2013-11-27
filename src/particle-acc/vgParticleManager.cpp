@@ -13,7 +13,7 @@
 
 	}	
 	//----------------------------------------------------------------
-	ParticleBase* ParticleManager::addParticleNode( String name, E_PARTICLE_TYPE type, tagPropOCL* propOCL, int id )
+	ParticleBase* ParticleManager::addParticleNode( String name, E_PARTICLE_TYPE type, tagPropOCL* propOCL, int id, std::string platform_type )
 	{
 		ParticleBase *node = getParticleNodeByName( name );
 
@@ -22,10 +22,22 @@
 			return node;
 		}
 
+		vector4 offset(70.0f, 50.0f, 520.0f);
+		if ( platform_type =="CPU" )
+		{
+			offset.x -= id*2;
+			offset.z += id*2;
+		}
+		else
+		{
+			offset.x += id*2;
+			offset.z -= id*2;
+		}
+
 		switch(type)
 		{
 		case PARTICLE_TYPE_FOUNTAIN:
-			node = new vgFountain( vector4(70.0f-id*2, 50.0f, 520.0f+id*2), name);
+			node = new vgFountain( offset, name, platform_type );
 			break;
 
 		case PARTICLE_TYPE_FIRE:

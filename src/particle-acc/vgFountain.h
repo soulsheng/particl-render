@@ -24,7 +24,7 @@
 	{
 		// 构造、析构
 	public:
-		vgFountain( vector4 pos, String particleName );
+		vgFountain( vector4 pos, String particleName, std::string platform_type );
 		vgFountain();
 		virtual	~vgFountain();
 		
@@ -84,6 +84,8 @@
 
 		PerlinNoise	m_noiseGenerator;// Perlin柏林噪声发生器
 		int r1,r2,r3, t; // Perlin柏林噪声参数
+		std::string	m_ParallelPlatformName; // 并行平台名称，CPU或GPU
+
 	}; // 喷泉类 class    vgFountain
 		
 #endif // _CFOUNTIN_H_INCLUDED_
