@@ -34,6 +34,11 @@
 	public:
 		virtual void	Initialize(tagPropOCL* propOCL);	//初始化
 		virtual void	render();  //渲染
+		virtual void	renderBegin();
+		virtual void	renderEnd();
+
+		virtual void	bind();
+		virtual void	unbind();
 
 		void UpdateEachFrame();			 //每帧更新
 		void resetPosition( tagDROP* pParticles, int index );

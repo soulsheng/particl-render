@@ -108,9 +108,11 @@
 
 		virtual long getNumOfTriangles()	{ return 0;}
 
-		/**
-		注意,返回的是Distance的平方
-		*/
+		virtual void	renderBegin(){}
+		virtual void	renderEnd(){}
+		
+		virtual void	bind(){}
+		virtual void	unbind(){}
 
 		virtual void	render(){}
 #endif		

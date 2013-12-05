@@ -182,15 +182,6 @@
 	
 	void vgFountain::render()
 	{
-#if RENDERMODE_MOVING
-
-#if ENABLE_OPENCL
-		ExecuteKernel();
-#else
-		UpdateEachFrame();
-#endif//ENABLE_OPENCL
-
-#endif//RENDERMODE_MOVING
 
 #if ENABLE_DRAW
 		glColor4f(1.0f  ,1.0f  ,1.0f ,1.0f);
@@ -339,7 +330,6 @@
 
 	void vgFountain::ExecuteKernel()
 	{
-		clEnqueueAcquireGLObjects( m_pPropOCL->g_cmd_queue, 1, &m_oclKernelArg.m_pOclBuffer, 0, 0, NULL);
 
 
 #if TIME_CL_MEMERY_CALCULATE
@@ -379,11 +369,7 @@
 		}
 #endif//TIME_CL_MEMERY_CALCULATE
 
-		clEnqueueReleaseGLObjects( m_pPropOCL->g_cmd_queue, 1, &m_oclKernelArg.m_pOclBuffer, 0, 0, 0);
-		if ( m_ParallelPlatformName == "CPU")
-		{
-			clFinish( m_pPropOCL->g_cmd_queue );
-		}
+		
 
 #if 0
 		float* pVertexArrayDynamic = &m_pdrop[0].position.s[0];
@@ -396,4 +382,41 @@
 #endif
 	}
 
-	
+	void vgFountain::renderBegin()
+	{
+#if RENDERMODE_MOVING
+
+#if ENABLE_OPENCL
+		ExecuteKernel();
+#else
+		UpdateEachFrame();
+#endif//ENABLE_OPENCL
+
+#endif//RENDERMODE_MOVING
+	}
+
+	void vgFountain::renderEnd()
+	{
+
+	}
+
+	void vgFountain::bind()
+	{
+#if ENABLE_OPENCL
+		clEnqueueAcquireGLObjects( m_pPropOCL->g_cmd_queue, 1, &m_oclKernelArg.m_pOclBuffer, 0, 0, NULL);
+#endif//ENABLE_OPENCL
+
+	}
+
+
+	void vgFountain::unbind()
+	{
+#if ENABLE_OPENCL
+		clEnqueueReleaseGLObjects( m_pPropOCL->g_cmd_queue, 1, &m_oclKernelArg.m_pOclBuffer, 0, 0, 0);
+		if ( m_ParallelPlatformName == "CPU")
+		{
+			clFinish( m_pPropOCL->g_cmd_queue );
+		}
+#endif//ENABLE_OPENCL
+	}
+

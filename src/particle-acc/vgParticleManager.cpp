@@ -7,9 +7,16 @@
 #include "vgFountain.h"
 	
 	//----------------------------------------------------------------
-	void ParticleManager::addParticleNode( ParticleBase *node )
+	void ParticleManager::addParticleNode( ParticleBase *node, std::string platform_type )
 	{
-		_particleNodeVec.push_back( node );
+		if ( platform_type == "CPU" )
+		{
+			_particleNodeVecCPU.push_back( node );
+		} 
+		else
+		{
+			_particleNodeVecGPU.push_back( node );
+		}
 
 	}	
 	//----------------------------------------------------------------
@@ -50,9 +57,9 @@
 		if(node)
 		{
 			node->Initialize( propOCL );
-			addParticleNode( node );
+			addParticleNode( node, platform_type );
 
-			int number = _particleNodeVec.size();
+			int number = _particleNodeVecCPU.size() + _particleNodeVecCPU.size();
 			ostringstream os;
 			os << number << " number of Particle! \r\n";
 		}
@@ -63,20 +70,85 @@
 	void ParticleManager::renderParticleNode()
 	{
 #if 1
-		ParticleNodePtrVecItr itr = _particleNodeVec.begin();
-		ParticleNodePtrVecItr itrend = _particleNodeVec.end();
+		ParticleNodePtrVecItr itr,itrend;
+
+
+		itr = _particleNodeVecGPU.begin();
+		itrend = _particleNodeVecGPU.end();
 		for (; itr != itrend; ++itr)
 		{
 			(*itr)->render();
 		}
+
+		itr = _particleNodeVecCPU.begin();
+		itrend = _particleNodeVecCPU.end();
+		for (; itr != itrend; ++itr)
+		{
+			(*itr)->render();
+		}
+
+		itr = _particleNodeVecGPU.begin();
+		itrend = _particleNodeVecGPU.end();
+		for (; itr != itrend; ++itr)
+		{
+			(*itr)->bind();
+		}
+
+		itr = _particleNodeVecCPU.begin();
+		itrend = _particleNodeVecCPU.end();
+		for (; itr != itrend; ++itr)
+		{
+			(*itr)->bind();
+		}
+
+
+		itr = _particleNodeVecGPU.begin();
+		itrend = _particleNodeVecGPU.end();
+		for (; itr != itrend; ++itr)
+		{
+			(*itr)->renderBegin();
+		}
+
+		itr = _particleNodeVecCPU.begin();
+		itrend = _particleNodeVecCPU.end();
+		for (; itr != itrend; ++itr)
+		{
+			(*itr)->renderBegin();
+		}
+
+		itr = _particleNodeVecGPU.begin();
+		itrend = _particleNodeVecGPU.end();
+		for (; itr != itrend; ++itr)
+		{
+			(*itr)->unbind();
+		}
+
+		itr = _particleNodeVecCPU.begin();
+		itrend = _particleNodeVecCPU.end();
+		for (; itr != itrend; ++itr)
+		{
+			(*itr)->unbind();
+		}
+
+		
 #endif
 	}
 
 	
 	ParticleBase* ParticleManager::getParticleNodeByName( const String& strRendererName )
 	{
-		ParticleNodePtrVec::iterator itr = _particleNodeVec.begin();
-		ParticleNodePtrVec::iterator itrend = _particleNodeVec.end();
+		ParticleNodePtrVec::iterator itr = _particleNodeVecCPU.begin();
+		ParticleNodePtrVec::iterator itrend = _particleNodeVecCPU.end();
+		for (; itr != itrend; ++itr)
+		{
+			if ((*itr)->getName() == strRendererName)
+			{
+				return	*itr;
+			}
+		}
+
+		itr = _particleNodeVecGPU.begin();
+		itrend = _particleNodeVecGPU.end();
 		for (; itr != itrend; ++itr)
 		{
 			if ((*itr)->getName() == strRendererName)
@@ -91,7 +163,8 @@
 	
 	void ParticleManager::reset()
 	{
-		_particleNodeVec.clear();
+		_particleNodeVecCPU.clear();
+		_particleNodeVecGPU.clear();
 	}
 
 	void ParticleManager::setDefault()
@@ -100,12 +173,4 @@
 
 	}
 
-	void ParticleManager::setPropOCL( tagPropOCL* propOCL )
-	{
-		ParticleNodePtrVec::iterator itr = _particleNodeVec.begin();
-		ParticleNodePtrVec::iterator itrend = _particleNodeVec.end();
-		for (; itr != itrend; ++itr)
-		{
-			(*itr)->setPropOCL( propOCL );
-		}
-	}
+	
